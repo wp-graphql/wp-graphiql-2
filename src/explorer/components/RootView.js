@@ -76,9 +76,6 @@ const RootView = (props) => {
   };
 
   const _onOperationRename = (event) => {
-    console.log({
-      operationRename: event.target.value,
-    });
     props.onOperationRename(event.target.value);
   };
 

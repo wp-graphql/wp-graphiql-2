@@ -1,5 +1,5 @@
 const { useContext, useState, createContext } = wp.element;
-const { hooks } = wpGraphiQL
+const { hooks } = window.wpGraphiQL;
 
 /**
  * Create context to maintain state for the Explorer
@@ -22,7 +22,6 @@ export const useExplorer = () => {
  * @constructor
  */
 export const ExplorerProvider = ({ children }) => {
-
   /**
    * Handle state for the explorer
    */
@@ -38,7 +37,10 @@ export const ExplorerProvider = ({ children }) => {
   /**
    * Filter the default state of the context
    */
-  const value = hooks.applyFilters( 'graphiql_explorer_context_default_value', { isExplorerOpen, toggleExplorer })
+  const value = hooks.applyFilters("graphiql_explorer_context_default_value", {
+    isExplorerOpen,
+    toggleExplorer,
+  });
 
   /**
    * Wrap children in the Provider

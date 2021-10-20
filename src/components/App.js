@@ -1,9 +1,6 @@
 import GraphiQLContainer from "./GraphiQLContainer";
-import { createHooks } from "@wordpress/hooks";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-const { useEffect, useState, createContext } = wp.element;
-
-const { hooks } = window.wpGraphiQL;
+const { hooks, useAppContext } = window.wpGraphiQL;
 
 const SetEndpoint = (props) => {
   return (
@@ -21,15 +18,12 @@ const getClient = (options) => {
   return new ApolloClient(options);
 };
 
-const { AppContext } = wpGraphiQL;
-
 const App = () => {
-  const [endpoint, setEndpoint] = useState(
-    window?.wpGraphiQLSettings?.graphqlEndpoint ?? null
-  );
-  const [nonce] = useState(window?.wpGraphiQLSettings?.nonce ?? null);
-
   let app;
+
+  const appContext = useAppContext();
+
+  const { endpoint, setEndpoint, nonce } = appContext;
 
   // if the endpoint can't be found, GraphiQL won't function properly
   // We can probably add a way for users to set this manually later, like
@@ -48,11 +42,9 @@ const App = () => {
   );
 
   app = (
-    <AppContext.Provider value={{ endpoint, setEndpoint }}>
-      <ApolloProvider client={getClient(apolloClientConfig)}>
-        <GraphiQLContainer nonce={nonce} endpoint={endpoint} />
-      </ApolloProvider>
-    </AppContext.Provider>
+    <ApolloProvider client={getClient(apolloClientConfig)}>
+      <GraphiQLContainer nonce={nonce} endpoint={endpoint} />
+    </ApolloProvider>
   );
 
   return hooks.applyFilters("graphiql_app", app, {

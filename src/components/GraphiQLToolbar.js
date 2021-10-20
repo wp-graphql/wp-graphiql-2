@@ -42,8 +42,6 @@ const GraphiQLToolbar = (props) => {
         graphiql
       );
 
-      console.log({ defaultButtons });
-
       if (buttons !== defaultButtons) {
         setState({ ...state, buttons: defaultButtons });
       }

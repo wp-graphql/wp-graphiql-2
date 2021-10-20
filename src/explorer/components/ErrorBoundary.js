@@ -4,7 +4,7 @@ const ErrorBoundary = ({ children }) => {
   const { ErrorBoundary, didCatch, error } = useErrorBoundary();
 
   if (didCatch) {
-    console.log({
+    console.warn({
       error,
     });
   }

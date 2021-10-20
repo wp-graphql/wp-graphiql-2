@@ -19,7 +19,7 @@ import GraphiQLToolbar from "./GraphiQLToolbar";
  * WP Dependencies
  */
 const { useState, useEffect, useRef } = wp.element;
-const { hooks } = wpGraphiQL;
+const { hooks, useAppContext } = wpGraphiQL;
 
 /**
  * Handle the resize of the App when the window size changes
@@ -192,9 +192,9 @@ const getInitialQuery = () => {
  * @constructor
  */
 const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
-  const [schema, setSchema] = useState(null);
+
   const [urlParams, setUrlParams] = useState(null);
-  const [query, setQuery] = useState(null);
+  const { schema, setSchema, query, setQuery } = useAppContext();
 
   let graphiql = useRef(null);
 

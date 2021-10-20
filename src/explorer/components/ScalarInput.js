@@ -46,8 +46,6 @@ const ScalarInput = (props) => {
         }}
         type="text"
         onChange={(e) => {
-          console.log(e.target.value);
-
           _handleChange(e);
         }}
         value={value}

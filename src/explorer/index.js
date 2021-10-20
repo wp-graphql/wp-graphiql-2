@@ -56,12 +56,5 @@ hooks.addFilter(
  * Wrap the GraphiQL App with the explorer context
  */
 hooks.addFilter("graphiql_app", "graphiql-explorer", (app, args) => {
-  console.log({
-    graphiql_app: {
-      app,
-      args,
-    },
-  });
-
   return <ExplorerProvider>{app}</ExplorerProvider>;
 });

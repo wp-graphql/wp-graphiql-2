@@ -68,12 +68,6 @@ const AbstractArgView = (props) => {
         );
       }
     } else if (isEnumType(argType)) {
-      console.log({
-        enum: {
-          values: argType.getValues(),
-        },
-      });
-
       if (argValue.kind === "EnumValue") {
         input = (
           <Select

@@ -3,6 +3,7 @@ import QueryBuilder from "./QueryBuilder";
 import ErrorBoundary from "./ErrorBoundary";
 import { memoizeParseQuery } from "../utils/utils";
 import { Spin } from "antd";
+const { useAppContext } = wpGraphiQL;
 const { useState, useEffect } = wp.element;
 
 const Wrapper = ({ schema, children }) => {
@@ -85,8 +86,9 @@ const getActionsOptions = (schema) => {
   return actionsOptions;
 };
 
-const Explorer = (props) => {
-  const { query, schema, setQuery } = props;
+const Explorer = () => {
+  const appContext = useAppContext();
+  const { query, schema, setQuery } = appContext;
   const [document, setDocument] = useState(null);
 
   useEffect(() => {

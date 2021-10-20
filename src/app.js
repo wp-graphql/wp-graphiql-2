@@ -1,4 +1,14 @@
+const { AppContextProvider } = window.wpGraphiQL;
+
 const { render } = wp.element;
 import App from "./components/App";
 
-render(<App />, document.getElementById(`graphiql`));
+const AppWithContext = () => {
+  return (
+    <AppContextProvider>
+      <App />
+    </AppContextProvider>
+  );
+};
+
+render(<AppWithContext />, document.getElementById(`graphiql`));

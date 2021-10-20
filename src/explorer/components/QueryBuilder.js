@@ -14,7 +14,7 @@ import {
 import RootView from "./RootView";
 import AddOperations from "./AddOperations";
 import "../index.scss";
-import { root } from "postcss";
+const { useAppContext } = wpGraphiQL;
 
 const { GraphQLObjectType, print } = wpGraphiQL.GraphQL;
 
@@ -44,18 +44,16 @@ const QueryBuilder = (props) => {
   };
 
   const _handleRootViewMount = (rootViewElId) => {
-    console.log(`_handleRootViewMount ${rootViewElId}`);
-
     if (!!operationToScrollTo && operationToScrollTo === rootViewElId) {
       // let selector = `.graphiql-explorer-root #${rootViewElId}`;
       //
       // let el = document.querySelector(selector);
       // el && el.scrollIntoView();
-      console.log(`scrollIntoView...`);
     }
   };
 
-  const { schema, query, makeDefaultArg } = props;
+  const { schema, query } = useAppContext();
+  const { makeDefaultArg } = props;
 
   if (!schema) {
     return (
@@ -165,7 +163,6 @@ const QueryBuilder = (props) => {
 
     const newDefinitions = [...existingDefs, newOperation];
 
-    console.log(`scroll to ${kind}-${newOperationName}`);
     // setOperationToScrollTo(`${kind}-${newOperationName}`);
 
     return {
@@ -178,11 +175,7 @@ const QueryBuilder = (props) => {
     const existingDefs = parsedQuery.definitions;
 
     const newDefinitions = existingDefs.filter((existingOperation) => {
-      if (targetOperation === existingOperation) {
-        return false;
-      } else {
-        return true;
-      }
+      return targetOperation !== existingOperation;
     });
 
     return {
@@ -257,7 +250,6 @@ const QueryBuilder = (props) => {
       definitions: newDefinitions,
     };
 
-    console.log(`scroll to ${kind}-${newOperationName}`);
     // setOperationToScrollTo(`${kind}-${newOperationName}`);
 
     props.onEdit(print(newOperationDef));
@@ -302,60 +294,6 @@ const QueryBuilder = (props) => {
       addOperation={addOperation}
     />
   );
-
-  // const actionsEl =
-  //   actionsOptions.length === 0 ? null : (
-  //     <div
-  //       style={{
-  //         minHeight: "50px",
-  //         maxHeight: "50px",
-  //         overflow: "none",
-  //       }}
-  //     >
-  //       <form
-  //         className="variable-editor-title graphiql-explorer-actions"
-  //         style={{
-  //           ...styleConfig.styles.explorerActionsStyle,
-  //           display: "flex",
-  //           flexDirection: "row",
-  //           alignItems: "center",
-  //           borderTop: "1px solid rgb(214, 214, 214)",
-  //         }}
-  //         onSubmit={(event) => event.preventDefault()}
-  //       >
-  //         <span
-  //           style={{
-  //             display: "inline-block",
-  //             flexGrow: "0",
-  //             textAlign: "right",
-  //           }}
-  //         >
-  //           Add new{" "}
-  //         </span>
-  //         <select
-  //           onChange={(event) => _setAddOperationType(event.target.value)}
-  //           value={newOperationType}
-  //           style={{ flexGrow: "2" }}
-  //         >
-  //           {actionsOptions}
-  //         </select>
-  //         <button
-  //           type="submit"
-  //           className="toolbar-button"
-  //           onClick={() =>
-  //             newOperationType ? addOperation(newOperationType) : null
-  //           }
-  //           style={{
-  //             ...styleConfig.styles.buttonStyle,
-  //             height: "22px",
-  //             width: "22px",
-  //           }}
-  //         >
-  //           <span>+</span>
-  //         </button>
-  //       </form>
-  //     </div>
-  //   );
 
   const availableFragments = relevantOperations.reduce((acc, operation) => {
     if (operation.kind === "FragmentDefinition") {
