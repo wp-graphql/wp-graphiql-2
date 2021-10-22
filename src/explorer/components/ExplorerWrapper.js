@@ -1,5 +1,15 @@
 import { useExplorer } from "./ExplorerContext";
 
+const { useEffect } = wp.element;
+/**
+ * This is the wrapping component around the GraphiQL Explorer / Query Builder
+ *
+ * This provides the wrapping markup and sets up the initial visible state
+ *
+ * @param props
+ * @returns {JSX.Element|null}
+ * @constructor
+ */
 const ExplorerWrapper = (props) => {
   const { isExplorerOpen, toggleExplorer } = useExplorer();
 
@@ -21,7 +31,7 @@ const ExplorerWrapper = (props) => {
     >
       <div className="doc-explorer">
         <div className="doc-explorer-title-bar">
-          <div className="doc-explorer-title">Query Builder</div>
+          <div className="doc-explorer-title">Explorer</div>
           <div className="doc-explorer-rhs">
             <div className="docExplorerHide" onClick={toggleExplorer}>
               {"\u2715"}

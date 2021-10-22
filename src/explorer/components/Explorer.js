@@ -6,6 +6,14 @@ import { Spin } from "antd";
 const { useAppContext } = wpGraphiQL;
 const { useState, useEffect } = wp.element;
 
+/**
+ * Establish some markup to wrap the Explorer with. Sets up some dimension and styling constraints.
+ *
+ * @param schema
+ * @param children
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Wrapper = ({ schema, children }) => {
   if (!schema) {
     return (
@@ -42,68 +50,26 @@ const Wrapper = ({ schema, children }) => {
   );
 };
 
-const getActionsOptions = (schema) => {
-  const queryType = schema && schema.getQueryType();
-  const mutationType = schema && schema.getMutationType();
-  const subscriptionType = schema && schema.getSubscriptionType();
-
-  const queryFields = queryType && queryType.getFields();
-  const mutationFields = mutationType && mutationType.getFields();
-  const subscriptionFields = subscriptionType && subscriptionType.getFields();
-
-  let actionsOptions = [];
-
-  if (queryFields) {
-    actionsOptions.push({
-      type: `query`,
-      label: `Queries`,
-      fields: () => {
-        return queryFields;
-      },
-    });
-  }
-
-  if (subscriptionFields) {
-    actionsOptions.push({
-      type: `subscription`,
-      label: `Subscriptions`,
-      fields: () => {
-        return subscriptionFields;
-      },
-    });
-  }
-
-  if (mutationFields) {
-    actionsOptions.push({
-      type: `mutation`,
-      label: `Mutations`,
-      fields: () => {
-        return mutationFields;
-      },
-    });
-  }
-
-  return actionsOptions;
-};
-
+/**
+ * This is the main Explorer component that adds the "Query Builder" UI to GraphiQL
+ *
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Explorer = () => {
-  const appContext = useAppContext();
-  const { query, schema, setQuery } = appContext;
+  const { query, schema, setQuery } = useAppContext();
+
   const [document, setDocument] = useState(null);
 
   useEffect(() => {
+    // When the component mounts, parse the query and keep it in memory
     const parsedQuery = memoizeParseQuery(query);
 
+    // Update the document, if needed
     if (document !== parsedQuery) {
       setDocument(parsedQuery);
     }
   });
-
-  // Determine the actions that can be taken on the document
-  // - add query
-  // - add mutation
-  // - add subscription
-  const actionOptions = getActionsOptions(schema);
 
   return (
     <>
@@ -114,6 +80,9 @@ const Explorer = () => {
               schema={schema}
               query={query}
               onEdit={(query) => {
+                // When the Query Builder makes changes
+                // to the query, this callback from AppContext
+                // is executed
                 setQuery(query);
               }}
             />

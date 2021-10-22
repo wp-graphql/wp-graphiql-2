@@ -6,14 +6,15 @@ import {
   specifiedRules,
 } from "graphql";
 import { client } from "../data/client";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import GraphiQL from "graphiql";
 import { getFetcher } from "../utils/fetcher";
 import styled from "styled-components";
-
+import LZString from "lz-string";
 import "graphiql/graphiql.css";
 import "./style.css";
 import GraphiQLToolbar from "./GraphiQLToolbar";
+import { useQueryParam, StringParam } from "use-query-params";
 
 /**
  * WP Dependencies
@@ -60,54 +61,12 @@ const StyledWrapper = styled.div`
 `;
 
 /**
- * Get the admin URL based on the url params
- *
- * @param urlParams
- * @returns {string}
- */
-const getAdminUrl = (urlParams) => {
-  return (
-    "admin.php" +
-    "?" +
-    Object.keys(urlParams)
-      .map(function (key) {
-        return (
-          encodeURIComponent(key) + `=` + encodeURIComponent(urlParams[key])
-        );
-      })
-      .join(`&`)
-  );
-};
-
-/**
- * Get initial Url Params
- * @returns {{}}
- */
-const getInitialUrlParams = () => {
-  let urlParams = {};
-
-  window.location.search
-    .substr(1)
-    .split(`&`)
-    .forEach((entry) => {
-      let eq = entry.indexOf(`=`);
-      if (eq >= 0) {
-        urlParams[decodeURIComponent(entry.slice(0, eq))] = decodeURIComponent(
-          entry.slice(eq + 1).replace(/\+/g, "%20")
-        );
-      }
-    });
-
-  return urlParams;
-};
-
-/**
  * Set the Fallback Query should GraphiQL fail to load a good initial query from localStorage or
  * url params
  *
  * @type {string}
  */
-const FALLBACK_QUERY = `# Welcome to GraphiQL
+export const FALLBACK_QUERY = `# Welcome to GraphiQL
 #
 # GraphiQL is an in-browser tool for writing, validating, and
 # testing GraphQL queries.
@@ -142,59 +101,20 @@ query GetPosts {
 `;
 
 /**
- * Determine the initial query
- *
- * @returns {null|string|*}
- */
-const getInitialQuery = () => {
-  const urlParams = getInitialUrlParams();
-
-  const DEFAULT_QUERY = `
-        {  
-            posts {
-                nodes { 
-                    id
-                    title
-                }
-            }
-        }`;
-
-  let initialQuery = null;
-
-  if (
-    window &&
-    window.localStorage &&
-    window.localStorage.getItem(`graphiql:query`)
-  ) {
-    initialQuery = window.localStorage.getItem(`graphiql:query`);
-  }
-
-  if (urlParams && urlParams.query) {
-    try {
-      initialQuery = print(parse(urlParams.query));
-    } catch (error) {
-      return FALLBACK_QUERY;
-    }
-  }
-
-  return initialQuery ? initialQuery : print(parse(DEFAULT_QUERY));
-};
-
-/**
  * GraphiQLContainer
  *
  * This is the container for GraphiQL which sets up state to be shared with GraphiQL and extensions
  *
- * @param string endpoint The endpoint GraphiQL should fetch from
- * @param string|null nonce The nonce to be used to identify the requesting user
+ * @param object props The props to establish the container. Includes the endpoint, nonce and useNonce fields.
  *
  * @returns {JSX.Element}
  * @constructor
  */
 const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
-
   const [urlParams, setUrlParams] = useState(null);
-  const { schema, setSchema, query, setQuery } = useAppContext();
+  const { schema, setSchema, query, setQuery, queryParams } = useAppContext();
+
+  const queryUrlParam = queryParams?.query ?? null
 
   let graphiql = useRef(null);
 
@@ -228,15 +148,6 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
   };
 
   /**
-   * Given urlParams, updates the url using the browser's history API
-   *
-   * @param params
-   */
-  const updateUrl = (params) => {
-    history.replaceState(null, null, getAdminUrl(params));
-  };
-
-  /**
    * Callback when the query is edited in GraphiQL
    *
    * @param editedQuery
@@ -263,11 +174,6 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
     if (update) {
       // Update the state with the new query
       setQuery(editedQuery);
-
-      // Add the query to the URL params and update the url
-      const newUrlParams = { ...urlParams, query: editedQuery };
-      setUrlParams(newUrlParams);
-      updateUrl(newUrlParams);
     }
   };
 
@@ -279,19 +185,50 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    // If no urlParams have been set, set them now
-    if (!urlParams) {
-      setUrlParams(getInitialUrlParams());
+    let defaultQuery = null;
+
+    console.log({
+      graphiqlContainer: {
+        queryParams,
+      },
+    });
+
+    // If there's a query url param, try to decode it
+    if (queryUrlParam) {
+      defaultQuery = LZString.decompressFromEncodedURIComponent(queryUrlParam);
+
+      // if it's null, it's not an encoded query, but a string query, i.e. {posts{nodes{id}}}
+      if (null === defaultQuery) {
+        defaultQuery = queryUrlParam;
+      }
+    }
+
+    try {
+      defaultQuery = print(parse(defaultQuery))
+    } catch (e) {
+      console.log( `query couldnt be parsed, get from localstorage or fallback`)
+      console.log( { parseError: {
+        error: e,
+        }})
+      defaultQuery = window?.localStorage.getItem('graphiql:query') ?? FALLBACK_QUERY
     }
 
     // If a query doesnt exist, get the initial query
     if (null === query || undefined === query) {
-      setQuery(getInitialQuery());
+      console.log({
+        defaultQuery: {
+          queryUrlParam,
+          defaultQuery,
+        },
+      });
+      setQuery(defaultQuery);
     }
+
+    hooks.doAction( 'graphiql_after_graphiql_container_render' )
 
     // Load the remote schema
     getRemoteSchema(setSchema);
-  });
+  } );
 
   // Set the args to pass to the hooks
   const hookArgs = {

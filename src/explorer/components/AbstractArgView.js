@@ -8,6 +8,12 @@ import { Button, Select, Tooltip } from "antd";
 
 const { useState } = wp.element;
 
+/**
+ * This view is used
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const AbstractArgView = (props) => {
   const [displayArgActions, setDisplayArgActions] = useState(true);
   const { definition } = props;

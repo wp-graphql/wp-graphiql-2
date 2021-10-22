@@ -14,6 +14,7 @@ import {
   CloseCircleOutlined,
   MoreOutlined,
 } from "@ant-design/icons";
+
 const { hooks } = wpGraphiQL;
 
 const { useEffect } = wp.element;
@@ -112,12 +113,8 @@ const RootView = (props) => {
   const operationDisplayName =
     props.name || `${capitalize(operationType)} Name`;
 
-  const menuItems = (
-    <>
-      {hooks.applyFilters("graphiql_operation_action_before_menu_items", [], {
-        Menu,
-        props,
-      })}
+  const operationActionMenuItems = {
+    clone: (
       <Menu.Item key={`clone`}>
         <Button
           type="link"
@@ -135,6 +132,8 @@ const RootView = (props) => {
           icon={<CopyOutlined />}
         >{`Clone ${capitalize(operationType)}`}</Button>
       </Menu.Item>
+    ),
+    destroy: (
       <Menu.Item key={`destroy`}>
         <Popconfirm
           zIndex={10000}
@@ -171,15 +170,28 @@ const RootView = (props) => {
           >{`Delete ${capitalize(operationType)}`}</Button>
         </Popconfirm>
       </Menu.Item>
-      <Menu.Item key={`Ugh!`}>Ugh!</Menu.Item>
-      {hooks.applyFilters("graphiql_operation_action_after_menu_items", [], {
-        Menu,
-        props,
-      })}
-    </>
+    ),
+  };
+
+  const filteredMenuItems = hooks.applyFilters(
+    "graphiql_operation_action_menu_items",
+    operationActionMenuItems,
+    { Menu, props }
   );
 
-  const menu = <Menu>{menuItems}</Menu>;
+  // If there are no actions (filtered out) don't render the menu
+  if (Object.keys(filteredMenuItems).length < 1) {
+    return null;
+  }
+
+  const renderMenuItems =
+    filteredMenuItems && Object.keys(filteredMenuItems).length
+      ? Object.keys(filteredMenuItems).map((menuItemKey) => {
+          return filteredMenuItems[menuItemKey] ?? null;
+        })
+      : null;
+
+  const menu = <Menu>{renderMenuItems}</Menu>;
 
   const operationActions = (
     <Dropdown

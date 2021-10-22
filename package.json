@@ -23,9 +23,12 @@
     "@wordpress/hooks": "^3.2.0",
     "antd": "^4.16.13",
     "graphiql": "1.4.2",
+    "lz-string": "^1.4.4",
     "postcss-loader": "^6.2.0",
+    "query-string": "^7.0.1",
     "styled-components": "^5.3.3",
     "use-error-boundary": "^2.0.6",
+    "use-query-params": "^1.2.3",
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {

@@ -1,23 +1,31 @@
 import GraphiQLContainer from "./GraphiQLContainer";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 const { hooks, useAppContext } = window.wpGraphiQL;
+const { useEffect } = wp.element
 
-const SetEndpoint = (props) => {
-  return (
-    <>
-      <h2>Set Endpoint</h2>
-      <p>
-        @todo: Add form to set endpoint if the app was loaded outside of
-        WordPress and there is no `window.wpGraphiQLSettings`
-      </p>
-    </>
-  );
-};
-
+/**
+ * Get the ApolloClient to wrap the app with
+ *
+ * This should allow various components to use Apollo to fetch resources
+ * from WPGraphQL to load into the interface. For example, we can
+ * save queries to a post type, then use a GraphQL query to fetch the
+ * saved queries for display in the UI ... 🤯 use GraphQL queries to query GraphQL
+ * queries!
+ *
+ *
+ * @param options
+ * @returns {ApolloClient<unknown>}
+ */
 const getClient = (options) => {
   return new ApolloClient(options);
 };
 
+/**
+ * The entry point for the App
+ *
+ * @returns {any}
+ * @constructor
+ */
 const App = () => {
   let app;
 
@@ -30,9 +38,13 @@ const App = () => {
   // a settings form they can manually add the endpoint, etc,
   // but for now this is how things work.
   if (!endpoint) {
-    app = <SetEndpoint setEndpoint={setEndpoint} />;
+    app = null;
   }
 
+  /**
+   * Configure the Apollo Client, pass it through a filter
+   * so 3rd party plugins can extend if needed
+   */
   const apolloClientConfig = hooks.applyFilters(
     "graphiql_apollo_client_config",
     {
@@ -46,6 +58,10 @@ const App = () => {
       <GraphiQLContainer nonce={nonce} endpoint={endpoint} />
     </ApolloProvider>
   );
+
+  useEffect(() => {
+    hooks.doAction( 'graphiql_app_rendered', app, { endpoint, setEndpoint, nonce } )
+  })
 
   return hooks.applyFilters("graphiql_app", app, {
     endpoint,
