@@ -1,5 +1,9 @@
 # WPGraphiQL 2.0
 
+**WARNING:**
+
+This project is rapidly iterating and may cause breaking changes at any time. Please use this and provide feedback, but understand that it will be changing quickly. 
+
 ![Screen Recording of WPGraphiQL 2 in action](./img/explorer-screen-recording.gif)
 
 ## What is WPGraphiQL 2.0?
