@@ -174,7 +174,7 @@ const RootView = (props) => {
   };
 
   const filteredMenuItems = hooks.applyFilters(
-    "graphiql_operation_action_menu_items",
+    "graphiql_explorer_operation_action_menu_items",
     operationActionMenuItems,
     { Menu, props }
   );

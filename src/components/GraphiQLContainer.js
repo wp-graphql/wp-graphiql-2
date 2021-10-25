@@ -206,7 +206,7 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
     try {
       defaultQuery = print(parse(defaultQuery))
     } catch (e) {
-      console.log( `query couldnt be parsed, get from localstorage or fallback`)
+      console.log( `query couldn't be parsed, get from localstorage or fallback` )
       console.log( { parseError: {
         error: e,
         }})
@@ -223,8 +223,6 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
       });
       setQuery(defaultQuery);
     }
-
-    hooks.doAction( 'graphiql_after_graphiql_container_render' )
 
     // Load the remote schema
     getRemoteSchema(setSchema);

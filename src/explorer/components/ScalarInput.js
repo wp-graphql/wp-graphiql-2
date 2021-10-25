@@ -9,20 +9,6 @@ const ScalarInput = (props) => {
     props.setArgValue(event, true);
   };
 
-  useEffect(() => {
-    const activeElement = window.document.activeElement;
-    if (
-      input &&
-      activeElement &&
-      !(activeElement instanceof HTMLTextAreaElement)
-    ) {
-      input.focus();
-      if (input?.value) {
-        input.setSelectionRange(0, input?.value.length);
-      }
-    }
-  });
-
   const { arg, argValue, styleConfig } = props;
   const argType = unwrapInputType(arg.type);
   const value = typeof argValue.value === "string" ? argValue.value : "";
@@ -35,6 +21,7 @@ const ScalarInput = (props) => {
     <span style={{ color }}>
       {argType.name === "String" ? '"' : ""}
       <Input
+          name={arg.name}
         style={{
           width: `15ch`,
           color,

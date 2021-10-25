@@ -55,6 +55,15 @@ export const AppContextProvider = ({
   const [nonce] = useState(window?.wpGraphiQLSettings?.nonce ?? null);
   const [query, setQuery] = useState(null);
   const [schema, setSchema] = useState(null);
+  const [_queryParams, _setQueryParams] = useState(queryParams)
+
+  const updateQueryParams = newParams => {
+    if ( queryParams !== newParams ) {
+      setQueryParams(newParams)
+      _setQueryParams(newParams)
+    }
+  }
+
 
   /**
    * Update the Query in AppContext and set the encoded query in the URL
@@ -126,7 +135,7 @@ export const AppContextProvider = ({
     })
 
     if ( JSON.stringify(( newQueryParams ) !== JSON.stringify( queryParams ) ) ) {
-      setQueryParams( newQueryParams )
+      updateQueryParams( newQueryParams )
     }
 
 
@@ -135,6 +144,7 @@ export const AppContextProvider = ({
     }
 
   };
+
 
   /**
    * Filter the default values of the app context
@@ -147,8 +157,8 @@ export const AppContextProvider = ({
     setQuery: updateQuery,
     schema,
     setSchema,
-    queryParams,
-    setQueryParams,
+    queryParams: _queryParams,
+    setQueryParams: updateQueryParams,
   });
 
   return (

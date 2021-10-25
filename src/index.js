@@ -15,12 +15,9 @@ window.wpGraphiQL = {
   AppContextProvider,
 };
 
-// Examples
 /**
  * This is an example showing how to add a custom action
  * to the operation action menu
- *
- *
  */
 hooks.addFilter(
   "graphiql_operation_action_menu_items",

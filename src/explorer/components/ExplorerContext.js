@@ -25,19 +25,6 @@ export const ExplorerProvider = ({ children }) => {
   // Access the query params from AppContext
   const { queryParams, setQueryParams } = useAppContext();
 
-  useEffect(effect => {
-
-    console.log( {
-      queryParamsChanged: {
-        queryParams,
-        effect
-      }
-    })
-
-    // setQueryParams(queryParams)
-
-  }, [ queryParams ])
-
   // Determine the default state of the explorer based
   // on queryParam, then localStorage
   const getExplorerDefaultOpenState = () => {
@@ -93,10 +80,10 @@ export const ExplorerProvider = ({ children }) => {
     // // Delete deprecated query param
     // delete( newQueryParams.explorerIsOpen )
     //
-    // if ( JSON.stringify( newQueryParams ) !== JSON.stringify(queryParams) ) {
-    //   // Update the url query param
-    //   setQueryParams(newQueryParams);
-    // }
+    if ( JSON.stringify( newQueryParams ) !== JSON.stringify(queryParams) ) {
+      // Update the url query param
+      setQueryParams(newQueryParams);
+    }
     //
     // // Store the state in localStorage
     // window?.localStorage.setItem("graphiql:isExplorerOpen", `${newState}`);
