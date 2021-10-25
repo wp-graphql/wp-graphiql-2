@@ -53,7 +53,14 @@ The Code Exporter is being rebuilt to include more relevant templates and extend
 
 ## How can I extend WPGraphiQL?
 
-Ok, this sounds interesting! How can one go about "extending" GraphiQL??
+Ok, this sounds interesting! 
+
+So tell me, how can I, as a plugin developer, go about "extending" GraphiQL??
+
+Here's a video you can watch, and below is some documentation about the filters available. 
+
+[![Video showing how to build a WPGraphiQL extension](./img/extension-tutorial-video-screenshot.png)](https://www.youtube.com/watch?v=e2l35zAT4JQ)
+
 
 ### Hooks and Filters
 Many WordPress developers are familiar with hooks and filters in PHP, and WPGraphiQL 2.0 now includes
