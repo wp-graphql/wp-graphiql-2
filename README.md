@@ -1,5 +1,7 @@
 # WPGraphiQL 2.0
 
+![Screen Recording of WPGraphiQL 2 in action](./img/explorer-screen-recording.gif)
+
 ## What is WPGraphiQL 2.0?
 
 WPGraphiQL 2.0 is a rebuild of the GraphiQL IDE that ships with WPGraphiQL. 
