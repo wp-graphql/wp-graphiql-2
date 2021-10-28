@@ -16,13 +16,13 @@ const AppWithContext = () => {
   return (
     <QueryParamProvider>
       <QueryParams config={filteredQueryParamsConfig}>
-        {renderProps => {
-            const { query, setQuery } = renderProps
-            return(
-                <AppContextProvider queryParams={query} setQueryParams={setQuery}>
-                    <App />
-                </AppContextProvider>
-            )
+        {(renderProps) => {
+          const { query, setQuery } = renderProps;
+          return (
+            <AppContextProvider queryParams={query} setQueryParams={setQuery}>
+              <App />
+            </AppContextProvider>
+          );
         }}
       </QueryParams>
     </QueryParamProvider>

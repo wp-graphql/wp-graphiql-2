@@ -1,5 +1,12 @@
 import "whatwg-fetch";
 
+/**
+ * Returns the authenticated fetcher
+ *
+ * @param endpoint
+ * @param options
+ * @returns {function(*=): Promise<*>}
+ */
 export const getFetcher = (endpoint, options) => {
   const { nonce } = options;
 

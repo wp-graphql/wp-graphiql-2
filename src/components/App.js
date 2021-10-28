@@ -1,7 +1,7 @@
 import GraphiQLContainer from "./GraphiQLContainer";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 const { hooks, useAppContext } = window.wpGraphiQL;
-const { useEffect } = wp.element
+const { useEffect } = wp.element;
 
 /**
  * Get the ApolloClient to wrap the app with
@@ -60,8 +60,12 @@ const App = () => {
   );
 
   useEffect(() => {
-    hooks.doAction( 'graphiql_app_rendered', app, { endpoint, setEndpoint, nonce } )
-  })
+    hooks.doAction("graphiql_app_rendered", app, {
+      endpoint,
+      setEndpoint,
+      nonce,
+    });
+  });
 
   return hooks.applyFilters("graphiql_app", app, {
     endpoint,

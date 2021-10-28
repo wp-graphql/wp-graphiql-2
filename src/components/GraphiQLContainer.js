@@ -112,9 +112,11 @@ query GetPosts {
  */
 const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
   const [urlParams, setUrlParams] = useState(null);
-  const { schema, setSchema, query, setQuery, queryParams } = useAppContext();
+  const appContext = useAppContext();
+  const { schema, setSchema, query, setQuery, queryParams, externalFragments } =
+    appContext;
 
-  const queryUrlParam = queryParams?.query ?? null
+  const queryUrlParam = queryParams?.query ?? null;
 
   let graphiql = useRef(null);
 
@@ -123,7 +125,8 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
    *
    * @type {function(*=): Promise<*>}
    */
-  const fetcher = getFetcher(endpoint, { nonce, useNonce });
+  let fetcher = getFetcher(endpoint, { nonce, useNonce });
+  fetcher = hooks.applyFilters("graphiql_fetcher", fetcher, appContext);
 
   /**
    * Get the Schema from the GraphQL Endpoint
@@ -187,12 +190,6 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
 
     let defaultQuery = null;
 
-    console.log({
-      graphiqlContainer: {
-        queryParams,
-      },
-    });
-
     // If there's a query url param, try to decode it
     if (queryUrlParam) {
       defaultQuery = LZString.decompressFromEncodedURIComponent(queryUrlParam);
@@ -204,29 +201,20 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
     }
 
     try {
-      defaultQuery = print(parse(defaultQuery))
+      defaultQuery = print(parse(defaultQuery));
     } catch (e) {
-      console.log( `query couldn't be parsed, get from localstorage or fallback` )
-      console.log( { parseError: {
-        error: e,
-        }})
-      defaultQuery = window?.localStorage.getItem('graphiql:query') ?? FALLBACK_QUERY
+      defaultQuery =
+        window?.localStorage.getItem("graphiql:query") ?? FALLBACK_QUERY;
     }
 
     // If a query doesnt exist, get the initial query
     if (null === query || undefined === query) {
-      console.log({
-        defaultQuery: {
-          queryUrlParam,
-          defaultQuery,
-        },
-      });
       setQuery(defaultQuery);
     }
 
     // Load the remote schema
     getRemoteSchema(setSchema);
-  } );
+  });
 
   // Set the args to pass to the hooks
   const hookArgs = {
@@ -264,6 +252,7 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
         query={query}
         onEditQuery={handleEditQuery}
         validationRules={specifiedRules}
+        externalFragments={externalFragments}
       >
         <GraphiQL.Toolbar>
           <GraphiQLToolbar graphiql={() => graphiql} />

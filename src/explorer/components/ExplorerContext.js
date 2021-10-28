@@ -32,7 +32,7 @@ export const ExplorerProvider = ({ children }) => {
       window?.localStorage.getItem("graphiql:isExplorerOpen") ?? null;
 
     // no-longer-supported query param
-    const deprecatedQueryParam = queryParams?.explorerIsOpen ?? null
+    const deprecatedQueryParam = queryParams?.explorerIsOpen ?? null;
 
     // get the state of the explorer from the url param
     const urlState = queryParams?.isExplorerOpen ?? deprecatedQueryParam;
@@ -54,7 +54,9 @@ export const ExplorerProvider = ({ children }) => {
   /**
    * Handle state for the explorer
    */
-  const [isExplorerOpen, setIsExplorerOpen] = useState(getExplorerDefaultOpenState());
+  const [isExplorerOpen, setIsExplorerOpen] = useState(
+    getExplorerDefaultOpenState()
+  );
 
   /**
    * When a new state is passed,
@@ -64,23 +66,24 @@ export const ExplorerProvider = ({ children }) => {
    * @param newState
    */
   const updateExplorer = (newState) => {
-
-    if ( isExplorerOpen !== newState ) {
+    if (isExplorerOpen !== newState) {
       // update component state
       setIsExplorerOpen(newState);
     }
 
-    const newQueryParams = { ...queryParams, isExplorerOpen: newState }
+    const newQueryParams = { ...queryParams, isExplorerOpen: newState };
 
-    console.log( { updateExplorer: {
+    console.log({
+      updateExplorer: {
         queryParams,
-        newQueryParams
-      }})
+        newQueryParams,
+      },
+    });
 
     // // Delete deprecated query param
     // delete( newQueryParams.explorerIsOpen )
     //
-    if ( JSON.stringify( newQueryParams ) !== JSON.stringify(queryParams) ) {
+    if (JSON.stringify(newQueryParams) !== JSON.stringify(queryParams)) {
       // Update the url query param
       setQueryParams(newQueryParams);
     }

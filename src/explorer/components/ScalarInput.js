@@ -21,7 +21,7 @@ const ScalarInput = (props) => {
     <span style={{ color }}>
       {argType.name === "String" ? '"' : ""}
       <Input
-          name={arg.name}
+        name={arg.name}
         style={{
           width: `15ch`,
           color,

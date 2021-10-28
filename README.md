@@ -2,20 +2,20 @@
 
 **WARNING:**
 
-This project is rapidly iterating and may cause breaking changes at any time. Please use this and provide feedback, but understand that it will be changing quickly. 
+This project is rapidly iterating and may cause breaking changes at any time. Please use this and provide feedback, but understand that it will be changing quickly.
 
 ![Screen Recording of WPGraphiQL 2 in action](./img/explorer-screen-recording.gif)
 
 ## What is WPGraphiQL 2.0?
 
-WPGraphiQL 2.0 is a rebuild of the GraphiQL IDE that ships with WPGraphiQL. 
+WPGraphiQL 2.0 is a rebuild of the GraphiQL IDE that ships with WPGraphiQL.
 
-It is being developed as a standalone plugin to start, but will eventually be merged into WPGraphQL 
-core as the default GraphiQL IDE that will  be supported and maintained with WPGraphQL.
+It is being developed as a standalone plugin to start, but will eventually be merged into WPGraphQL
+core as the default GraphiQL IDE that will be supported and maintained with WPGraphQL.
 
 ## Installation / Activation
 
-Download, install and activate this plugin as you would any other WordPress plugin. 
+Download, install and activate this plugin as you would any other WordPress plugin.
 
 When activating this plugin, it will prevent the GraphiQL that ships with WPGraphQL from
 loading and will load the new version instead.
@@ -23,14 +23,14 @@ loading and will load the new version instead.
 ## Why rebuild WPGraphiQL?
 
 You, like many other users, have probably used GraphiQL inside your WordPress dashboard
-and thought to yourself "wow, this is perfect software" and so now you're wondering why it's being 
-re-built. 
+and thought to yourself "wow, this is perfect software" and so now you're wondering why it's being
+re-built.
 
 Extendability is the answer.
 
-The main goal behind the rebuild of WPGraphiQL is to build it in a way where it, much like the 
-rest of WPGraphQL, can be extended by other WordPress plugins to create a customizable experience 
-for users using WPGraphQL. 
+The main goal behind the rebuild of WPGraphiQL is to build it in a way where it, much like the
+rest of WPGraphQL, can be extended by other WordPress plugins to create a customizable experience
+for users using WPGraphQL.
 
 That, and, despite the unanimous feedback, it's not actually perfect software.
 
@@ -38,13 +38,13 @@ In addition to making the IDE extendable, we're also working on improving some U
 
 ## What's Different?
 
-For the most part, functionality should be similar, but the UI has been updated to provide a smoother 
+For the most part, functionality should be similar, but the UI has been updated to provide a smoother
 experience.
 
 ### New Explorer
 
-The "Explorer" UI has been rebuilt with an updated UI (using Ant.Design components) and the ability 
-for plugin authors to customize the experience. 
+The "Explorer" UI has been rebuilt with an updated UI (using Ant.Design components) and the ability
+for plugin authors to customize the experience.
 
 For example, the Explorer has filters in place that allow plugin authors the ability to add custom
 action buttons for each operation, override input components for arguments, etc.
@@ -57,21 +57,21 @@ The Code Exporter is being rebuilt to include more relevant templates and extend
 
 ## How can I extend WPGraphiQL?
 
-Ok, this sounds interesting! 
+Ok, this sounds interesting!
 
 So tell me, how can I, as a plugin developer, go about "extending" GraphiQL??
 
-Here's a video you can watch, and below is some documentation about the filters available. 
+Here's a video you can watch, and below is some documentation about the filters available.
 
 [![Video showing how to build a WPGraphiQL extension](./img/extension-tutorial-video-screenshot.png)](https://www.youtube.com/watch?v=e2l35zAT4JQ)
 
-
 ### Hooks and Filters
+
 Many WordPress developers are familiar with hooks and filters in PHP, and WPGraphiQL 2.0 now includes
 a hook and filter system for JavaScript.
 
-We've rebuilt WPGraphiQL to have many hookable/filterable areas, using 
-the [@wordpress/hooks](https://www.npmjs.com/package/@wordpress/hooks) package. 
+We've rebuilt WPGraphiQL to have many hookable/filterable areas, using
+the [@wordpress/hooks](https://www.npmjs.com/package/@wordpress/hooks) package.
 
 The following filters have been added (with more to come):
 
@@ -81,14 +81,14 @@ This filter can be used to adjust the default behavior for the Query Params Cont
 
 #### graphiql_apollo_client_config
 
-This filter can be used to customize the Apollo client config. 
+This filter can be used to customize the Apollo client config.
 
 This is still in progress, but the plan is to expose Apollo to extensions so that
 extensions can easily query data from GraphQL using Apollo for use in their extensions.
 
 #### graphiql_app
 
-This filter can be used to wrap the app with Context providers. 
+This filter can be used to wrap the app with Context providers.
 
 You can see this in use by the Explorer and Code Exporter
 
@@ -130,5 +130,5 @@ This filter allows plugins to add custom components after (to the right of) the 
 
 #### graphiql_explorer_operation_action_menu_items
 
-This filter allows plugins to add custom actions to the "Operation Actions" menu. 
+This filter allows plugins to add custom actions to the "Operation Actions" menu.
 The default buttons are "Clone Query" and "Delete Query".

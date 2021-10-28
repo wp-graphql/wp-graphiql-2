@@ -56,6 +56,13 @@ add_action( 'admin_enqueue_scripts', function() {
 		true
 	);
 
+	wp_enqueue_style(
+		'wp-graphiql-explorer',
+		plugins_url( 'build/explorer.css', __FILE__ ),
+		[ 'wp-components' ],
+		$explorer_asset_file['version']
+	);
+
 	// Enqueue the assets for the exporter before enqueueing the app,
 	// so that the JS in the exporter that hooks into the app will be available
 	// by time the app is enqueued
@@ -75,6 +82,23 @@ add_action( 'admin_enqueue_scripts', function() {
 		[ 'wp-components' ],
 		$exporter_asset_file['version']
 	);
+
+	$auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/app.asset.php');
+
+	wp_enqueue_script(
+		'wp-graphiql-auth-switch', // Handle.
+		plugins_url( 'build/authSwitch.js', __FILE__ ),
+		array_merge( ['wp-graphiql'], $auth_switch_asset_file['dependencies'] ),
+		$auth_switch_asset_file['version'],
+		true
+	);
+
+//	wp_enqueue_style(
+//		'wp-graphiql-auth-switch',
+//		plugins_url( 'build/authSwitch.css', __FILE__ ),
+//		[ 'wp-components' ],
+//		$auth_switch_asset_file['version']
+//	);
 
 	$app_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/app.asset.php');
 
@@ -99,6 +123,24 @@ add_action( 'admin_enqueue_scripts', function() {
 		[
 			'nonce'           => wp_create_nonce( 'wp_rest' ),
 			'graphqlEndpoint' => trailingslashit( site_url() ) . 'index.php?' . \WPGraphQL\Router::$route,
+			'avatarUrl' => 0 !== get_current_user_id() ? get_avatar_url( get_current_user_id() ) : null,
+			'externalFragments' => apply_filters( 'graphiql_external_fragments', [
+				'fragment ExternalPostFragment on Post {
+					id
+					title
+				}
+				',
+				'
+				fragment ExternalPageFragment on Page {
+				  id
+				  title
+				  content
+				}
+				',
+				'
+					invalidFragment
+				',
+			] )
 		]
 	);
 

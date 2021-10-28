@@ -1,6 +1,7 @@
 import { createHooks } from "@wordpress/hooks";
 import LZString from "lz-string";
-import { parse, print } from "graphql/index.js";
+import { parse } from "graphql/index.js";
+import { getExternalFragments } from "../utils/externalFragments";
 const { useContext, createContext, useState, useEffect } = wp.element;
 
 /**
@@ -55,15 +56,17 @@ export const AppContextProvider = ({
   const [nonce] = useState(window?.wpGraphiQLSettings?.nonce ?? null);
   const [query, setQuery] = useState(null);
   const [schema, setSchema] = useState(null);
-  const [_queryParams, _setQueryParams] = useState(queryParams)
+  const [externalFragments, setExternalFragments] = useState(
+    getExternalFragments()
+  );
+  const [_queryParams, _setQueryParams] = useState(queryParams);
 
-  const updateQueryParams = newParams => {
-    if ( queryParams !== newParams ) {
-      setQueryParams(newParams)
-      _setQueryParams(newParams)
+  const updateQueryParams = (newParams) => {
+    if (queryParams !== newParams) {
+      setQueryParams(newParams);
+      _setQueryParams(newParams);
     }
-  }
-
+  };
 
   /**
    * Update the Query in AppContext and set the encoded query in the URL
@@ -78,9 +81,9 @@ export const AppContextProvider = ({
       },
     });
 
-    let update = false
-    let encoded
-    let decoded
+    let update = false;
+    let encoded;
+    let decoded;
 
     if (null !== newQuery && newQuery === query) {
       return;
@@ -89,14 +92,13 @@ export const AppContextProvider = ({
     if (null === newQuery || "" === newQuery) {
       update = true;
     } else {
-
-      decoded = LZString.decompressFromEncodedURIComponent(newQuery)
+      decoded = LZString.decompressFromEncodedURIComponent(newQuery);
       // the newQuery is not encoded, lets encode it now
-      if ( null === decoded ) {
+      if (null === decoded) {
         // Encode the query
         encoded = LZString.compressToEncodedURIComponent(newQuery);
       } else {
-        encoded = newQuery
+        encoded = newQuery;
       }
 
       try {
@@ -122,29 +124,16 @@ export const AppContextProvider = ({
       window?.localStorage.setItem("graphiql:query", newQuery);
     }
 
-    const newQueryParams = { ...queryParams, query: encoded }
+    const newQueryParams = { ...queryParams, query: encoded };
 
-    console.log({
-      setQueryParamsYo: {
-        queryParams,
-        encoded,
-        newQuery,
-        decoded,
-        newQueryParams
-      }
-    })
-
-    if ( JSON.stringify(( newQueryParams ) !== JSON.stringify( queryParams ) ) ) {
-      updateQueryParams( newQueryParams )
+    if (JSON.stringify(newQueryParams !== JSON.stringify(queryParams))) {
+      updateQueryParams(newQueryParams);
     }
 
-
-    if ( query !== newQuery ) {
+    if (query !== newQuery) {
       setQuery(newQuery);
     }
-
   };
-
 
   /**
    * Filter the default values of the app context
@@ -159,6 +148,8 @@ export const AppContextProvider = ({
     setSchema,
     queryParams: _queryParams,
     setQueryParams: updateQueryParams,
+    externalFragments,
+    setExternalFragments,
   });
 
   return (

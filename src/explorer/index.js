@@ -7,7 +7,7 @@ import {
   useExplorer,
 } from "./components/ExplorerContext";
 import { GraphiQL } from "graphiql";
-import {BooleanParam, StringParam} from "use-query-params";
+import { BooleanParam, StringParam } from "use-query-params";
 
 /**
  * Hook into the GraphiQL Toolbar to add the button to toggle the Explorer
@@ -64,6 +64,9 @@ hooks.addFilter(
   "graphiql_query_params_provider_config",
   "graphiql-explorer",
   (config) => {
-    return { ...config, ...{ isExplorerOpen: BooleanParam, explorerIsOpen: StringParam } };
+    return {
+      ...config,
+      ...{ isExplorerOpen: BooleanParam, explorerIsOpen: StringParam },
+    };
   }
 );
