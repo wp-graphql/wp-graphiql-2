@@ -2,14 +2,18 @@
   @import "~antd/dist/antd.min";
 }
 
-#wp-graphiql-wrapper .docExplorerWrap {
+.codemirrorWrap pre, .CodeMirror-code pre {
+  margin-bottom: 0;
+}
+
+.wp-graphiql-wrapper .docExplorerWrap {
   background: white;
   box-shadow: 0 0 8px rgb(0 0 0 / 15%);
   position: relative;
   z-index: 4;
 }
 
-#wp-graphiql-wrapper .docExplorerWrap .doc-explorer-title-bar {
+.wp-graphiql-wrapper .docExplorerWrap .doc-explorer-title-bar {
   cursor: default;
   display: flex;
   height: 34px;
@@ -20,7 +24,7 @@
   user-select: none;
 }
 
-#wp-graphiql-wrapper .docExplorerWrap .doc-explorer-title {
+.wp-graphiql-wrapper .docExplorerWrap .doc-explorer-title {
   flex: 1 1;
   font-weight: 700;
   overflow-x: hidden;
@@ -32,6 +36,6 @@
   white-space: nowrap;
 }
 
-#wp-graphiql-wrapper .docExplorerWrap .doc-explorer-rhs {
+.wp-graphiql-wrapper .docExplorerWrap .doc-explorer-rhs {
   position: relative;
 }

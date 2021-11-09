@@ -1,5 +1,15 @@
 import GraphiQLContainer from "./GraphiQLContainer";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import ActiveDocuments from "./ActiveDocuments";
+import {
+  buildClientSchema,
+  getIntrospectionQuery,
+  parse,
+  print,
+  specifiedRules,
+} from "graphql";
+import { client } from "../data/client";
+import { gql, useQuery } from "@apollo/client";
 const { hooks, useAppContext } = window.wpGraphiQL;
 const { useEffect } = wp.element;
 
@@ -31,7 +41,7 @@ const App = () => {
 
   const appContext = useAppContext();
 
-  const { endpoint, setEndpoint, nonce } = appContext;
+  const { schema, setSchema, endpoint, setEndpoint, nonce } = appContext;
 
   // if the endpoint can't be found, GraphiQL won't function properly
   // We can probably add a way for users to set this manually later, like
@@ -53,13 +63,40 @@ const App = () => {
     }
   );
 
+  /**
+   * Get the Schema from the GraphQL Endpoint
+   */
+   const getRemoteSchema = () => {
+    if (null !== schema) {
+      return;
+    }
+    const remoteQuery = getIntrospectionQuery();
+
+    client(endpoint)
+      .query({
+        query: gql`
+          ${remoteQuery}
+        `,
+      })
+      .then((res) => {
+        const clientSchema = res?.data ? buildClientSchema(res.data) : null;
+
+        setSchema(clientSchema);
+      });
+  };
+
   app = (
     <ApolloProvider client={getClient(apolloClientConfig)}>
-      <GraphiQLContainer nonce={nonce} endpoint={endpoint} />
+      {/* <GraphiQLContainer nonce={nonce} endpoint={endpoint} /> */}
+      <ActiveDocuments />
     </ApolloProvider>
   );
 
   useEffect(() => {
+
+    // Load the remote schema
+    getRemoteSchema(setSchema);
+
     hooks.doAction("graphiql_app_rendered", app, {
       endpoint,
       setEndpoint,

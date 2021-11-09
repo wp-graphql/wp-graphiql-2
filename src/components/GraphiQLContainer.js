@@ -1,12 +1,9 @@
 import {
-  buildClientSchema,
-  getIntrospectionQuery,
   parse,
   print,
   specifiedRules,
 } from "graphql";
-import { client } from "../data/client";
-import { gql, useQuery } from "@apollo/client";
+
 import GraphiQL from "graphiql";
 import { getFetcher } from "../utils/fetcher";
 import styled from "styled-components";
@@ -21,26 +18,6 @@ import { useQueryParam, StringParam } from "use-query-params";
  */
 const { useState, useEffect, useRef } = wp.element;
 const { hooks, useAppContext } = wpGraphiQL;
-
-/**
- * Handle the resize of the App when the window size changes
- */
-const handleResize = () => {
-  // Hide update nags and errors on the graphiql page
-  // document.getElementsByClassName('update-nag' )[0].style.visibility = 'hidden';
-  // document.getElementsByClassName('error' )[0].style.visibility = 'hidden';
-
-  let defaultHeight = 500;
-  let windowHeight = window.innerHeight;
-  let footerHeight = document.getElementById("wpfooter").clientHeight ?? 60;
-  let adminBarHeight = document.getElementById("wpadminbar").clientHeight ?? 60;
-  let height = windowHeight - adminBarHeight - footerHeight - 65;
-  let graphqlHeight = height < defaultHeight ? defaultHeight : height;
-
-  document.getElementById(
-    "wp-graphiql-wrapper"
-  ).style.height = `${graphqlHeight}px`;
-};
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -58,6 +35,7 @@ const StyledWrapper = styled.div`
   margin: 0;
   overflow: hidden;
   width: 100%;
+  height: ${(props) => props.height}px;
 `;
 
 /**
@@ -110,10 +88,11 @@ query GetPosts {
  * @returns {JSX.Element}
  * @constructor
  */
-const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
+const GraphiQLContainer = props => {
+  const { height } = props
   const [urlParams, setUrlParams] = useState(null);
   const appContext = useAppContext();
-  const { schema, setSchema, query, setQuery, queryParams, externalFragments } =
+  const { schema, setSchema, query, setQuery, queryParams, externalFragments, endpoint, nonce } =
     appContext;
 
   const queryUrlParam = queryParams?.query ?? null;
@@ -125,30 +104,9 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
    *
    * @type {function(*=): Promise<*>}
    */
-  let fetcher = getFetcher(endpoint, { nonce, useNonce });
+  let fetcher = getFetcher(endpoint, { nonce });
   fetcher = hooks.applyFilters("graphiql_fetcher", fetcher, appContext);
 
-  /**
-   * Get the Schema from the GraphQL Endpoint
-   */
-  const getRemoteSchema = () => {
-    if (null !== schema) {
-      return;
-    }
-    const remoteQuery = getIntrospectionQuery();
-
-    client(endpoint)
-      .query({
-        query: gql`
-          ${remoteQuery}
-        `,
-      })
-      .then((res) => {
-        const clientSchema = res?.data ? buildClientSchema(res.data) : null;
-
-        setSchema(clientSchema);
-      });
-  };
 
   /**
    * Callback when the query is edited in GraphiQL
@@ -184,9 +142,6 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
    * Setup initial state when the component mounts
    */
   useEffect(() => {
-    // Listen for resizes to keep the app sized for the window
-    handleResize();
-    window.addEventListener("resize", handleResize);
 
     let defaultQuery = null;
 
@@ -212,8 +167,6 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
       setQuery(defaultQuery);
     }
 
-    // Load the remote schema
-    getRemoteSchema(setSchema);
   });
 
   // Set the args to pass to the hooks
@@ -238,7 +191,7 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
   );
 
   const app = (
-    <StyledWrapper id="wp-graphiql-wrapper">
+    <StyledWrapper id="wp-graphiql-wrapper" height={height}>
       {beforeGraphiql.length > 0 ? beforeGraphiql : null}
 
       <GraphiQL

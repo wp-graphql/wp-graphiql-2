@@ -56,6 +56,7 @@ export const AppContextProvider = ({
   const [nonce] = useState(window?.wpGraphiQLSettings?.nonce ?? null);
   const [query, setQuery] = useState(null);
   const [schema, setSchema] = useState(null);
+  const [ activeDocuments, setActiveDocuments ] = useState([])
   const [externalFragments, setExternalFragments] = useState(
     getExternalFragments()
   );
@@ -150,6 +151,8 @@ export const AppContextProvider = ({
     setQueryParams: updateQueryParams,
     externalFragments,
     setExternalFragments,
+    activeDocuments, 
+    setActiveDocuments,
   });
 
   return (

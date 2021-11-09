@@ -13,4 +13,5 @@ window.wpGraphiQL = {
   getEndpoint: getEndpoint(),
   useAppContext,
   AppContextProvider,
+  
 };
