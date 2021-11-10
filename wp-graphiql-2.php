@@ -83,13 +83,30 @@ add_action( 'admin_enqueue_scripts', function() {
 		$exporter_asset_file['version']
 	);
 
-	$auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/app.asset.php');
+	$auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/authSwitch.asset.php');
 
 	wp_enqueue_script(
 		'wp-graphiql-auth-switch', // Handle.
 		plugins_url( 'build/authSwitch.js', __FILE__ ),
 		array_merge( ['wp-graphiql'], $auth_switch_asset_file['dependencies'] ),
 		$auth_switch_asset_file['version'],
+		true
+	);
+
+//	wp_enqueue_style(
+//		'wp-graphiql-auth-switch',
+//		plugins_url( 'build/authSwitch.css', __FILE__ ),
+//		[ 'wp-components' ],
+//		$auth_switch_asset_file['version']
+//	);
+
+	$document_tabs_file = include( plugin_dir_path( __FILE__ ) . 'build/documentTabs.asset.php');
+
+	wp_enqueue_script(
+		'wp-graphiql-document-tabs', // Handle.
+		plugins_url( 'build/documentTabs.js', __FILE__ ),
+		array_merge( ['wp-graphiql'], $document_tabs_file['dependencies'] ),
+		$document_tabs_file['version'],
 		true
 	);
 

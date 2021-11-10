@@ -9,6 +9,7 @@ module.exports = {
     codeExporter: path.resolve(process.cwd(), "src/code-exporter", "index.js"),
     explorer: path.resolve(process.cwd(), "src/explorer", "index.js"),
     authSwitch: path.resolve(process.cwd(), "src/auth-switch", "index.js"),
+    documentTabs: path.resolve(process.cwd(), "src/document-tabs", "index.js"),
   },
   externals: {
     react: "React",

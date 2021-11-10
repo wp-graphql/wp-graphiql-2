@@ -81,6 +81,8 @@ export const AppContextProvider = ({
       },
     });
 
+    hooks.doAction("graphiql_update_query", { newQuery, query });
+
     let update = false;
     let encoded;
     let decoded;
