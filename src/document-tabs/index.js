@@ -1,4 +1,5 @@
-import { Tabs } from "antd";
+import { Popconfirm, Tabs, Dropdown, Button, Menu } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 const { TabPane } = Tabs;
 const { hooks, useAppContext } = wpGraphiQL;
@@ -39,16 +40,16 @@ const DocumentTabs = ({ children }) => {
   };
 
   const getInitialActiveKey = () => {
-      return "1";
-  }
+    return "1";
+  };
 
   const [documentPanes, setDocumentPanes] = useState(getInitialDocumentPanes());
-  const [activeKey, setActiveKey] = useState( getInitialActiveKey() );
+  const [activeKey, setActiveKey] = useState(getInitialActiveKey());
 
-  const updateActiveKey  = key => {
-      localStorage.setItem("graphiql:documentPaneActiveKey", key );
-      setActiveKey(key);
-  }
+  const updateActiveKey = (key) => {
+    localStorage.setItem("graphiql:documentPaneActiveKey", key);
+    setActiveKey(key);
+  };
 
   const updateDocumentPanes = (newDocumentPanes) => {
     if (JSON.stringify(newDocumentPanes) !== JSON.stringify(documentPanes)) {
@@ -94,32 +95,31 @@ const DocumentTabs = ({ children }) => {
 
     const activePane = documentPanes.find((pane) => pane.key === key);
     console.log({ activePane });
-    setQuery(print(parse(activePane.query)));
-    setActiveKey(key);
+
+    if (activePane?.query) {
+      setQuery(print(parse(activePane.query)));
+      setActiveKey(key);
+    }
   };
 
   const addTab = () => {
     const lastKey = parseInt(documentPanes[documentPanes.length - 1].key);
 
     const newPane = {
-        key: `${lastKey + 1}`,
-        title: "New Query",
-        query: `query { posts { nodes { id, title } } }`,
-      }
+      key: `${lastKey + 1}`,
+      title: "unnamed query",
+      query: `query { posts { nodes { id, title } } }`,
+    };
 
-    updateDocumentPanes([
-      ...documentPanes,
-      newPane,
-    ]);
+    updateDocumentPanes([...documentPanes, newPane]);
 
     setActiveKey(newPane.key);
-    
   };
 
   const removeTab = (key) => {
     console.log({ removeTab: key });
     if (documentPanes.length > 1) {
-        updateDocumentPanes(documentPanes.filter((pane) => pane.key !== key));
+      updateDocumentPanes(documentPanes.filter((pane) => pane.key !== key));
     }
   };
 
@@ -146,16 +146,62 @@ const DocumentTabs = ({ children }) => {
     return parse(tabPane.query)?.definitions[0]?.name?.value ?? defaultTitle;
   };
 
+  const renderMenuItems = (
+    <>
+      <Menu.Item key="1">GraphiQL</Menu.Item>
+      <Menu.Item key="2">Schema Docs</Menu.Item>
+      <Menu.Item key="3">Schema Voyager</Menu.Item>
+    </>
+  );
+
+  const menu = <Menu>{renderMenuItems}</Menu>;
+
+    const dropdown = (
+        <Dropdown
+            overlay={menu}
+            arrow
+            getPopupContainer={() =>
+              document.getElementById("graphiql-document-tabs")
+            }
+          >
+            <Button type="text" onClick={(e) => e.stopPropagation()}>
+              <MoreOutlined />
+            </Button>
+          </Dropdown>
+    )
+
   return documentPanes && documentPanes.length ? (
     <Tabs
       type="editable-card"
       activeKey={activeKey}
       onChange={handleChangeTab}
       onEdit={handleEditTab}
+      tabBarExtraContent={{
+        left: dropdown,
+      }}
     >
       {documentPanes.map((tabPane) => {
         const title = getDocumentTitle(tabPane);
-        return <TabPane tab={title} key={tabPane.key} />;
+        return (
+          <TabPane
+            tab={<>{title} {dropdown}</>}
+            key={tabPane.key}
+            closeIcon={
+              <Popconfirm
+                getPopupContainer={() =>
+                  document.getElementById("graphiql-document-tabs")
+                }
+                title="Are you sure you want to delete this query?"
+                onConfirm={() => removeTab(tabPane.key)}
+                onCancel={null}
+                okText="Delete"
+                cancelText="No"
+              >
+                x
+              </Popconfirm>
+            }
+          />
+        );
       })}
     </Tabs>
   ) : null;
@@ -167,7 +213,7 @@ hooks.addFilter(
   (res, props) => {
     return (
       <StyledTabContainer>
-        <div className="antd-app">
+        <div id="graphiql-document-tabs" className="antd-app">
           <DocumentTabs />
         </div>
         <StyledTabContents>{res}</StyledTabContents>
