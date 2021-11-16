@@ -2,7 +2,12 @@ import { createHooks } from "@wordpress/hooks";
 import LZString from "lz-string";
 import { parse } from "graphql/index.js";
 import { getExternalFragments } from "../utils/externalFragments";
-const { useContext, createContext, useState, useEffect } = wp.element;
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+} from "@wordpress/element";
 
 /**
  * Create hooks to be used throughout the plugin

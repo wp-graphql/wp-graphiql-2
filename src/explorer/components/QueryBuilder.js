@@ -13,7 +13,7 @@ import {
 } from "../utils/utils";
 import RootView from "./RootView";
 import AddOperations from "./AddOperations";
-import "../index.scss";
+
 const { useAppContext } = wpGraphiQL;
 
 const { GraphQLObjectType, print } = wpGraphiQL.GraphQL;

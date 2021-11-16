@@ -1,7 +1,9 @@
 import GraphiQLContainer from "./GraphiQLContainer";
+import Router from "../re-org/Router";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 const { hooks, useAppContext } = window.wpGraphiQL;
 const { useEffect } = wp.element;
+import "./app.scss";
 
 /**
  * Get the ApolloClient to wrap the app with
@@ -55,7 +57,8 @@ const App = () => {
 
   app = (
     <ApolloProvider client={getClient(apolloClientConfig)}>
-      <GraphiQLContainer nonce={nonce} endpoint={endpoint} />
+      {/* <GraphiQLContainer nonce={nonce} endpoint={endpoint} /> */}
+      <Router nonce={nonce} endpoint={endpoint} />
     </ApolloProvider>
   );
 

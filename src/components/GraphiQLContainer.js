@@ -19,28 +19,8 @@ import { useQueryParam, StringParam } from "use-query-params";
 /**
  * WP Dependencies
  */
-const { useState, useEffect, useRef } = wp.element;
+import { useState, useEffect, useRef } from "@wordpress/element";
 const { hooks, useAppContext } = wpGraphiQL;
-
-/**
- * Handle the resize of the App when the window size changes
- */
-const handleResize = () => {
-  // Hide update nags and errors on the graphiql page
-  // document.getElementsByClassName('update-nag' )[0].style.visibility = 'hidden';
-  // document.getElementsByClassName('error' )[0].style.visibility = 'hidden';
-
-  let defaultHeight = 500;
-  let windowHeight = window.innerHeight;
-  let footerHeight = document.getElementById("wpfooter").clientHeight ?? 60;
-  let adminBarHeight = document.getElementById("wpadminbar").clientHeight ?? 60;
-  let height = windowHeight - adminBarHeight - footerHeight - 65;
-  let graphqlHeight = height < defaultHeight ? defaultHeight : height;
-
-  document.getElementById(
-    "wp-graphiql-wrapper"
-  ).style.height = `${graphqlHeight}px`;
-};
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -48,16 +28,22 @@ const StyledWrapper = styled.div`
   .topBar {
     height: 50px;
   }
-  .doc-explorer-title, 
+  .doc-explorer-title,
   .history-title {
     padding-top: 5px;
   }
-  width:100%
+  height: 100%;
   display: flex;
   flex-direction: row;
   margin: 0;
   overflow: hidden;
   width: 100%;
+  .docExplorerShow {
+    display: none;
+  }
+  .graphiql-container .execute-button-wrap {
+    margin: 0 14px;
+  }
 `;
 
 /**
@@ -184,10 +170,6 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
    * Setup initial state when the component mounts
    */
   useEffect(() => {
-    // Listen for resizes to keep the app sized for the window
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
     let defaultQuery = null;
 
     // If there's a query url param, try to decode it
@@ -253,10 +235,12 @@ const GraphiQLContainer = ({ endpoint, nonce, useNonce }) => {
         onEditQuery={handleEditQuery}
         validationRules={specifiedRules}
         externalFragments={externalFragments}
+        docExplorerOpen={false}
       >
         <GraphiQL.Toolbar>
           <GraphiQLToolbar graphiql={() => graphiql} />
         </GraphiQL.Toolbar>
+        <GraphiQL.Logo>{<></>}</GraphiQL.Logo>
       </GraphiQL>
       {afterGraphiQL.length > 0 ? afterGraphiQL : null}
     </StyledWrapper>

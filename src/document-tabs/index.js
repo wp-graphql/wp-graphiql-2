@@ -156,19 +156,19 @@ const DocumentTabs = ({ children }) => {
 
   const menu = <Menu>{renderMenuItems}</Menu>;
 
-    const dropdown = (
-        <Dropdown
-            overlay={menu}
-            arrow
-            getPopupContainer={() =>
-              document.getElementById("graphiql-document-tabs")
-            }
-          >
-            <Button type="text" onClick={(e) => e.stopPropagation()}>
-              <MoreOutlined />
-            </Button>
-          </Dropdown>
-    )
+  const dropdown = (
+    <Dropdown
+      overlay={menu}
+      arrow
+      getPopupContainer={() =>
+        document.getElementById("graphiql-document-tabs")
+      }
+    >
+      <Button type="text" onClick={(e) => e.stopPropagation()}>
+        <MoreOutlined />
+      </Button>
+    </Dropdown>
+  );
 
   return documentPanes && documentPanes.length ? (
     <Tabs
@@ -184,7 +184,11 @@ const DocumentTabs = ({ children }) => {
         const title = getDocumentTitle(tabPane);
         return (
           <TabPane
-            tab={<>{title} {dropdown}</>}
+            tab={
+              <>
+                {title} {dropdown}
+              </>
+            }
             key={tabPane.key}
             closeIcon={
               <Popconfirm
@@ -207,17 +211,17 @@ const DocumentTabs = ({ children }) => {
   ) : null;
 };
 
-hooks.addFilter(
-  "graphiql_container",
-  "graphiql-document-tabs",
-  (res, props) => {
-    return (
-      <StyledTabContainer>
-        <div id="graphiql-document-tabs" className="antd-app">
-          <DocumentTabs />
-        </div>
-        <StyledTabContents>{res}</StyledTabContents>
-      </StyledTabContainer>
-    );
-  }
-);
+// hooks.addFilter(
+//   "graphiql_container",
+//   "graphiql-document-tabs",
+//   (res, props) => {
+//     return (
+//       <StyledTabContainer>
+//         <div id="graphiql-document-tabs" className="antd-app">
+//           <DocumentTabs />
+//         </div>
+//         <StyledTabContents>{res}</StyledTabContents>
+//       </StyledTabContainer>
+//     );
+//   }
+// );

@@ -1,5 +1,4 @@
 import * as GraphQL from "graphql/index.js";
-
 import {
   hooks,
   AppContextProvider,

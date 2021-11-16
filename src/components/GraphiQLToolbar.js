@@ -26,13 +26,6 @@ const GraphiQLToolbar = (props) => {
         GraphiQL().handlePrettifyQuery();
       },
     },
-    {
-      label: `History`,
-      title: `Show History`,
-      onClick: (GraphiQL) => {
-        GraphiQL().handleToggleHistory();
-      },
-    },
   ];
 
   // Setup the context to pass to the filters
