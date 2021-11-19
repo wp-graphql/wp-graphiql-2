@@ -1,9 +1,13 @@
-import GraphiQLContainer from "./GraphiQLContainer";
-import Router from "../re-org/Router";
+import GraphiQLContainer from "../GraphiQLContainer";
+import Router from "../../re-org/Router";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 const { hooks, useAppContext } = window.wpGraphiQL;
 const { useEffect } = wp.element;
 import "./app.scss";
+
+import { useMachine } from "@xstate/react";
+import { AppStateMachine } from "./machine";
+import { AppStateProvider } from "./context";
 
 /**
  * Get the ApolloClient to wrap the app with
@@ -55,10 +59,21 @@ const App = () => {
     }
   );
 
+  const [current, send] = useMachine(AppStateMachine, {
+    context: { endpoint },
+  });
+
+  // If there is no schema, let's fetch it!
+  if (null === current.context.schema) {
+    send("FETCH_SCHEMA");
+  }
+
   app = (
     <ApolloProvider client={getClient(apolloClientConfig)}>
-      {/* <GraphiQLContainer nonce={nonce} endpoint={endpoint} /> */}
-      <Router nonce={nonce} endpoint={endpoint} />
+      <AppStateProvider>
+        {/* <GraphiQLContainer nonce={nonce} endpoint={endpoint} /> */}
+        <Router nonce={nonce} endpoint={endpoint} />
+      </AppStateProvider>
     </ApolloProvider>
   );
 

@@ -97,7 +97,7 @@ const screens = hooks.applyFilters("graphiql_screens", [
     title: "IDE",
     icon: createElement(CodeOutlined),
     render: ({ endpoint, nonce }) => {
-      return (<h2>Document Editor...</h2>)
+      return <h2>Document Editor...</h2>;
       // return (
       //   <DocumentEditorContextProvider>
       //     <DocumentEditor endpoint={endpoint} nonce={nonce} />

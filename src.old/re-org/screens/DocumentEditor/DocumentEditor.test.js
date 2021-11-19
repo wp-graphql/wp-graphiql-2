@@ -50,8 +50,8 @@
 
 //         // If we're saving a document that hasn't been saved before, we should
 //         // validate that the document is unique. If there's a document
-//         // with the same normalized operation, we should show an error. 
-//         // The user will need to make the document unique prior to saving, 
+//         // with the same normalized operation, we should show an error.
+//         // The user will need to make the document unique prior to saving,
 //         // chose to apply the changes to an existing document, or cancel the save.
 //         describe('if the document is a local document', () => {
 //             describe('when the document is untouched', () => {
@@ -75,8 +75,7 @@
 //         describe('if the document is a remote document', () => {
 //             describe('when the document is untouched', () => {})
 //             describe('when the document is has unsaved changes', () => {})
-//         })  
+//         })
 //     });
-    
 
 // })

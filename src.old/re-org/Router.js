@@ -7,12 +7,16 @@ import {
   LeftOutlined,
   LineChartOutlined,
   RightOutlined,
+  RocketOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import styled from "styled-components";
 import { useState } from "@wordpress/element";
+import DocumentEditor from "./screens/DocumentEditor/DocumentEditor";
 const { hooks } = wpGraphiQL;
 const { Header, Sider, Content } = Layout;
+import { Voyager } from "graphql-voyager";
+import Schema from "./screens/Schema";
 
 const StyledRouter = styled.div`
   .graphiql-app-screen-sider .ant-layout-sider-trigger {
@@ -29,20 +33,19 @@ const getDefaultScreens = () => {
       title: "IDE",
       icon: createElement(CodeOutlined),
       render: ({ endpoint, nonce }) => {
-        return (
-          <h2>IDE...</h2>
-        );
+        // return (
+        //     <Content style={{ padding: `20px` }}>
+        //         <h2>IDE...</h2>
+        //     </Content>
+        // )
+        return <DocumentEditor />;
       },
     },
     {
       name: "schema",
       title: "Schema",
       icon: createElement(DatabaseOutlined),
-      render: () => (
-        <Content style={{ padding: `20px` }}>
-          <h2>Schema...</h2>
-        </Content>
-      ),
+      render: () => <Schema />,
     },
     {
       name: "docs",
@@ -76,10 +79,22 @@ const Router = (props) => {
     const currentScreen = getCurrentScreen();
     return (
       (
-        <span data-testid={`render-screen-${currentScreen.name}`}>
+        <Layout data-testid={`render-screen-${currentScreen.name}`}>
           {currentScreen?.render(props)}
-        </span>
-      ) || <h2>No screen...</h2>
+        </Layout>
+      ) || (
+        // <span
+        //     data-testid={`render-screen-${currentScreen.name}`}
+        //     style={{
+        //         overflow:`scroll`,
+        //         display:`flex`,
+        //         height:`100%`
+        //     }}
+        // >
+        //   {currentScreen?.render(props)}
+        // </span>
+        <h2>No screen...</h2>
+      )
     );
   };
 
@@ -97,9 +112,7 @@ const Router = (props) => {
           defaultCollapsed={collapsed}
           collapsed={collapsed}
           trigger={
-            <span
-              data-testid="router-menu-collapse-trigger"
-            >
+            <span data-testid="router-menu-collapse-trigger">
               {collapsed ? <RightOutlined /> : <LeftOutlined />}
             </span>
           }

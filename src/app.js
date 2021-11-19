@@ -1,32 +1,12 @@
-import { QueryParamProvider, QueryParams, StringParam } from "use-query-params";
-import App from "./components/App";
-const { AppContextProvider, hooks } = window.wpGraphiQL;
-const { render } = wp.element;
+import Router from "./components/Router/Router.js";
+import { render } from "@wordpress/element";
+import "./app.scss";
 
-const AppWithContext = () => {
-  // Filter the query params config
-  const filteredQueryParamsConfig = hooks.applyFilters(
-    "graphiql_query_params_provider_config",
-    {
-      query: StringParam,
-      variables: StringParam,
-    }
-  );
-
-  return (
-    <QueryParamProvider>
-      <QueryParams config={filteredQueryParamsConfig}>
-        {(renderProps) => {
-          const { query, setQuery } = renderProps;
-          return (
-            <AppContextProvider queryParams={query} setQueryParams={setQuery}>
-              <App />
-            </AppContextProvider>
-          );
-        }}
-      </QueryParams>
-    </QueryParamProvider>
-  );
+const App = () => {
+  return <Router />;
 };
 
-render(<AppWithContext />, document.getElementById(`graphiql`));
+/**
+ * Render the application to the DOM
+ */
+render(<App />, document.getElementById(`graphiql`));

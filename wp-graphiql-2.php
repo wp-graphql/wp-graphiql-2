@@ -43,55 +43,55 @@ add_action( 'admin_enqueue_scripts', function() {
 	// after the window object is established, but before the App renders
 	do_action( 'enqueue_graphiql_extension' );
 
-	// Enqueue the assets for the Explorer before enqueueing the app,
-	// so that the JS in the exporter that hooks into the app will be available
-	// by time the app is enqueued
-	$explorer_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/codeExporter.asset.php');
+	// // Enqueue the assets for the Explorer before enqueueing the app,
+	// // so that the JS in the exporter that hooks into the app will be available
+	// // by time the app is enqueued
+	// $explorer_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/codeExporter.asset.php');
 
-	wp_enqueue_script(
-		'wp-graphiql-explorer', // Handle.
-		plugins_url( 'build/explorer.js', __FILE__ ),
-		array_merge( ['wp-graphiql'], $explorer_asset_file['dependencies'] ),
-		$explorer_asset_file['version'],
-		true
-	);
+	// wp_enqueue_script(
+	// 	'wp-graphiql-explorer', // Handle.
+	// 	plugins_url( 'build/explorer.js', __FILE__ ),
+	// 	array_merge( ['wp-graphiql'], $explorer_asset_file['dependencies'] ),
+	// 	$explorer_asset_file['version'],
+	// 	true
+	// );
 
-	wp_enqueue_style(
-		'wp-graphiql-explorer',
-		plugins_url( 'build/explorer.css', __FILE__ ),
-		[ 'wp-components' ],
-		$explorer_asset_file['version']
-	);
+	// wp_enqueue_style(
+	// 	'wp-graphiql-explorer',
+	// 	plugins_url( 'build/explorer.css', __FILE__ ),
+	// 	[ 'wp-components' ],
+	// 	$explorer_asset_file['version']
+	// );
 
-	// Enqueue the assets for the exporter before enqueueing the app,
-	// so that the JS in the exporter that hooks into the app will be available
-	// by time the app is enqueued
-	$exporter_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/codeExporter.asset.php');
+	// // Enqueue the assets for the exporter before enqueueing the app,
+	// // so that the JS in the exporter that hooks into the app will be available
+	// // by time the app is enqueued
+	// $exporter_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/codeExporter.asset.php');
 
-	wp_enqueue_script(
-		'wp-graphiql-code-exporter', // Handle.
-		plugins_url( 'build/codeExporter.js', __FILE__ ),
-		array_merge( ['wp-graphiql'], $exporter_asset_file['dependencies'] ),
-		$exporter_asset_file['version'],
-		true
-	);
+	// wp_enqueue_script(
+	// 	'wp-graphiql-code-exporter', // Handle.
+	// 	plugins_url( 'build/codeExporter.js', __FILE__ ),
+	// 	array_merge( ['wp-graphiql'], $exporter_asset_file['dependencies'] ),
+	// 	$exporter_asset_file['version'],
+	// 	true
+	// );
 
-	wp_enqueue_style(
-		'wp-graphiql-code-exporter',
-		plugins_url( 'build/codeExporter.css', __FILE__ ),
-		[ 'wp-components' ],
-		$exporter_asset_file['version']
-	);
+	// wp_enqueue_style(
+	// 	'wp-graphiql-code-exporter',
+	// 	plugins_url( 'build/codeExporter.css', __FILE__ ),
+	// 	[ 'wp-components' ],
+	// 	$exporter_asset_file['version']
+	// );
 
-	$auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/authSwitch.asset.php');
+	// $auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/authSwitch.asset.php');
 
-	wp_enqueue_script(
-		'wp-graphiql-auth-switch', // Handle.
-		plugins_url( 'build/authSwitch.js', __FILE__ ),
-		array_merge( ['wp-graphiql'], $auth_switch_asset_file['dependencies'] ),
-		$auth_switch_asset_file['version'],
-		true
-	);
+	// wp_enqueue_script(
+	// 	'wp-graphiql-auth-switch', // Handle.
+	// 	plugins_url( 'build/authSwitch.js', __FILE__ ),
+	// 	array_merge( ['wp-graphiql'], $auth_switch_asset_file['dependencies'] ),
+	// 	$auth_switch_asset_file['version'],
+	// 	true
+	// );
 
 //	wp_enqueue_style(
 //		'wp-graphiql-auth-switch',
@@ -100,15 +100,15 @@ add_action( 'admin_enqueue_scripts', function() {
 //		$auth_switch_asset_file['version']
 //	);
 
-	$document_tabs_file = include( plugin_dir_path( __FILE__ ) . 'build/documentTabs.asset.php');
+	// $document_tabs_file = include( plugin_dir_path( __FILE__ ) . 'build/documentTabs.asset.php');
 
-	wp_enqueue_script(
-		'wp-graphiql-document-tabs', // Handle.
-		plugins_url( 'build/documentTabs.js', __FILE__ ),
-		array_merge( ['wp-graphiql'], $document_tabs_file['dependencies'] ),
-		$document_tabs_file['version'],
-		true
-	);
+	// wp_enqueue_script(
+	// 	'wp-graphiql-document-tabs', // Handle.
+	// 	plugins_url( 'build/documentTabs.js', __FILE__ ),
+	// 	array_merge( ['wp-graphiql'], $document_tabs_file['dependencies'] ),
+	// 	$document_tabs_file['version'],
+	// 	true
+	// );
 
 //	wp_enqueue_style(
 //		'wp-graphiql-auth-switch',
@@ -122,7 +122,7 @@ add_action( 'admin_enqueue_scripts', function() {
 	wp_enqueue_script(
 		'wp-graphiql-app', // Handle.
 		plugins_url( 'build/app.js', __FILE__ ),
-		array_merge( ['wp-graphiql', 'wp-graphiql-explorer', 'wp-graphiql-code-exporter'], $app_asset_file['dependencies'] ),
+		array_merge( ['wp-graphiql'], $app_asset_file['dependencies'] ),
 		$app_asset_file['version'],
 		true
 	);

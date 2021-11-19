@@ -1,15 +1,9 @@
 import * as GraphQL from "graphql/index.js";
-import {
-  hooks,
-  AppContextProvider,
-  useAppContext,
-  getEndpoint,
-} from "./context/AppContext";
+import { createHooks } from "@wordpress/hooks";
+
+export const hooks = createHooks();
 
 window.wpGraphiQL = {
-  hooks,
   GraphQL,
-  getEndpoint: getEndpoint(),
-  useAppContext,
-  AppContextProvider,
+  hooks,
 };
