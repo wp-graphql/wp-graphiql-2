@@ -4,11 +4,11 @@ import { getFetcher } from "../../utils/fetcher";
 import styled from "styled-components";
 import "./style.scss";
 import { Spin } from "antd";
+import GraphiQLToolbar from "./components/GraphiQLToolbar";
 const { hooks, useAppContext } = wpGraphiQL;
 
 const StyledWrapper = styled.div`
   display: flex;
-  border: 1px solid #ccc;
   .topBar {
     height: 50px;
   }
@@ -54,7 +54,12 @@ const GraphiQLScreen = () => {
         fetcher={(params) => {
           return fetcher(params);
         }}
-      />
+      >
+        <GraphiQL.Toolbar>
+          <GraphiQLToolbar graphiql={() => graphiql} />
+        </GraphiQL.Toolbar>
+        <GraphiQL.Logo>{<></>}</GraphiQL.Logo>
+      </GraphiQL>
     </StyledWrapper>
   ) : <Spin style={{margin: `50px` }}/>;
 }
