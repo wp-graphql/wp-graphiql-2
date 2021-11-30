@@ -22,6 +22,7 @@
     "@apollo/client": "3.4.16",
     "@codemirror/lang-javascript": "^0.19.2",
     "@codemirror/lang-php": "^0.19.1",
+    "@testing-library/react-hooks": "^7.0.2",
     "@uiw/react-codemirror": "^4.1.0",
     "@wordpress/babel-preset-default": "^6.4.1",
     "@wordpress/compose": "^5.0.0",
