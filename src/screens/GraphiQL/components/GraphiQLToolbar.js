@@ -64,7 +64,7 @@ const GraphiQLToolbar = (props) => {
 
   // Return the toolbar
   return (
-    <>
+    <span data-testid="graphiql-toolbar">
       {
         // returns any components that were filtered in before the buttons
         beforeToolbarButtons.length > 0 ? beforeToolbarButtons : null
@@ -75,10 +75,12 @@ const GraphiQLToolbar = (props) => {
         // the buttons
         buttonsConfig &&
           buttonsConfig.length &&
-          buttonsConfig.map((button) => {
+          buttonsConfig.map((button, i) => {
             const { label, title, onClick } = button;
             return (
               <GraphiQL.Button
+                data-testid={label}
+                key={i}
                 onClick={() => {
                   onClick(graphiql);
                 }}
@@ -93,7 +95,7 @@ const GraphiQLToolbar = (props) => {
         // returns any components that were were filtered after the buttons
         afterToolbarButtons.length > 0 ? afterToolbarButtons : null
       }
-    </>
+    </span>
   );
 };
 
