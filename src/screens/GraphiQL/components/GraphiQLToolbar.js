@@ -1,4 +1,5 @@
 import { GraphiQL } from "graphiql";
+import { useGraphiQLContext } from "../context/GraphiQLContext";
 const { hooks } = wpGraphiQL;
 
 /**
@@ -27,18 +28,20 @@ const GraphiQLToolbar = (props) => {
       },
     },
     {
-        label: `History`,
-        title: `Show History`,
-        onClick: (GraphiQL) => {
-          GraphiQL().handleToggleHistory();
-        },
+      label: `History`,
+      title: `Show History`,
+      onClick: (GraphiQL) => {
+        GraphiQL().handleToggleHistory();
       },
+    },
   ];
+
+  const graphiqlContext = useGraphiQLContext();
 
   // Setup the context to pass to the filters
   const filterContext = {
     ...props,
-    ...{ GraphiQL },
+    ...{ GraphiQL, graphiqlContext },
   };
 
   // Allows the toolbar buttons to be filtered.
@@ -64,7 +67,7 @@ const GraphiQLToolbar = (props) => {
 
   // Return the toolbar
   return (
-    <span data-testid="graphiql-toolbar">
+    <div data-testid="graphiql-toolbar" style={{ display: "flex" }}>
       {
         // returns any components that were filtered in before the buttons
         beforeToolbarButtons.length > 0 ? beforeToolbarButtons : null
@@ -95,7 +98,7 @@ const GraphiQLToolbar = (props) => {
         // returns any components that were were filtered after the buttons
         afterToolbarButtons.length > 0 ? afterToolbarButtons : null
       }
-    </span>
+    </div>
   );
 };
 

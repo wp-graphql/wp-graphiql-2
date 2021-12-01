@@ -7,8 +7,16 @@ module.exports = {
     index: path.resolve(process.cwd(), "src", "index.js"),
     app: path.resolve(process.cwd(), "src", "App.js"),
     // codeExporter: path.resolve(process.cwd(), "src/code-exporter", "index.js"),
-    // explorer: path.resolve(process.cwd(), "src/explorer", "index.js"),
-    // authSwitch: path.resolve(process.cwd(), "src/auth-switch", "index.js"),
+    graphiqlQueryComposer: path.resolve(
+      process.cwd(),
+      "src/extensions/graphiql-query-composer",
+      "index.js"
+    ),
+    graphiqlAuthSwitch: path.resolve(
+      process.cwd(),
+      "src/extensions/graphiql-auth-switch",
+      "index.js"
+    ),
     // documentTabs: path.resolve(process.cwd(), "src/document-tabs", "index.js"),
   },
   externals: {

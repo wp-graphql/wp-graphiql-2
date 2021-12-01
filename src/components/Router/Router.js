@@ -134,13 +134,16 @@ const Router = (props) => {
   const remoteQuery = getIntrospectionQuery();
 
   useEffect(() => {
-    
-    client(endpoint).query({
-      query: gql`${remoteQuery}`
-    }).then(res => {
-      const clientSchema = res?.data ? buildClientSchema(res.data) : null;
-      setSchema(clientSchema);
-    });
+    client(endpoint)
+      .query({
+        query: gql`
+          ${remoteQuery}
+        `,
+      })
+      .then((res) => {
+        const clientSchema = res?.data ? buildClientSchema(res.data) : null;
+        setSchema(clientSchema);
+      });
   }, []);
 
   const { screen } = queryParams;

@@ -6,7 +6,7 @@ import {
   screen,
   waitFor,
   act,
-  renderHook
+  renderHook,
 } from "@testing-library/react";
 import Router from "./Router";
 
@@ -25,11 +25,9 @@ afterEach(() => {
 const render = (component) => {
   return rtlRender(
     <QueryParamProvider>
-      <AppContextProvider >
-        {component}
-      </AppContextProvider>
+      <AppContextProvider>{component}</AppContextProvider>
     </QueryParamProvider>
-    );
+  );
 };
 
 describe("Router", () => {
@@ -133,6 +131,7 @@ describe("router filters", () => {
   });
 
   afterAll(() => {
+    const { hooks } = wpGraphiQL;
     hooks.removeAllFilters("graphiql_router_screens");
   });
 
@@ -207,18 +206,17 @@ describe("router filters", () => {
     });
   });
 
-  test('changing screens, causes screen query param to change', async () => {
-    
+  test("changing screens, causes screen query param to change", async () => {
     // check default screen query param is equal to default screen
     // click to change screen
     // assert that query param is now equal to new screen
     await act(async () => {
       render(<Router />);
-      
+
       // graphiql is the defualt screen we should see
-      expect( screen.getByTestId("router-screen-graphiql") ).toBeInTheDocument();
+      expect(screen.getByTestId("router-screen-graphiql")).toBeInTheDocument();
       const queryParam = window.location.search.split("=")[1];
-      expect( queryParam ).toBe( "graphiql" );
+      expect(queryParam).toBe("graphiql");
 
       // click menu item to change route
       const button = screen.getByTestId("router-menu-item-help");
@@ -226,21 +224,19 @@ describe("router filters", () => {
 
       await waitFor(() => {
         screen.queryByTestId("router-screen-help");
-      } );
+      });
 
-      // graphiql screen should no longer be rendered 
-      expect( screen.queryByTestId("router-screen-graphiql") ).not.toBeInTheDocument(); 
+      // graphiql screen should no longer be rendered
+      expect(
+        screen.queryByTestId("router-screen-graphiql")
+      ).not.toBeInTheDocument();
 
       // testScreen screen should now be present
-      expect( screen.queryByTestId("router-screen-help") ).toBeInTheDocument();
+      expect(screen.queryByTestId("router-screen-help")).toBeInTheDocument();
 
       // test that query param is now equal to new screen
       const newQueryParam = window.location.search.split("=")[1];
-      expect( newQueryParam ).toBe( "help" );
-
-    })
-
-
-  })
-
+      expect(newQueryParam).toBe("help");
+    });
+  });
 });
