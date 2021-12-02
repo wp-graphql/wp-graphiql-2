@@ -73,6 +73,7 @@ const GraphiQLScreen = () => {
         fetcher={(params) => {
           return fetcher(params);
         }}
+        schema={schema}
         query={query}
       >
         <GraphiQL.Toolbar>

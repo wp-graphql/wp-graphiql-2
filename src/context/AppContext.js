@@ -1,5 +1,4 @@
 import { useContext, createContext, useState } from "@wordpress/element";
-import { hooks } from "../index";
 
 export const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);

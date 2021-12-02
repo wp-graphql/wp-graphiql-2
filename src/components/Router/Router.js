@@ -16,8 +16,8 @@ import { withQueryParams, useQueryParams, StringParam } from "use-query-params";
 import GraphiQL from "../../screens/GraphiQL/GraphiQL";
 import { client } from "../../data/client";
 
-const { useAppContext, GraphQL } = wpGraphiQL;
-const { getIntrospectionQuery, buildClientSchema } = GraphQL;
+const { useAppContext } = wpGraphiQL;
+import { getIntrospectionQuery, buildClientSchema } from "graphql";
 
 const { Sider } = Layout;
 
@@ -130,10 +130,16 @@ const Router = (props) => {
     screen: StringParam,
   });
 
-  const { endpoint, setSchema } = useAppContext();
-  const remoteQuery = getIntrospectionQuery();
+  const { endpoint, schema, setSchema } = useAppContext();
+  
 
   useEffect(() => {
+    if ( null !== schema ) {
+      return;
+    }
+
+    const remoteQuery = getIntrospectionQuery();
+
     client(endpoint)
       .query({
         query: gql`
@@ -142,9 +148,12 @@ const Router = (props) => {
       })
       .then((res) => {
         const clientSchema = res?.data ? buildClientSchema(res.data) : null;
-        setSchema(clientSchema);
+        if ( clientSchema !== schema ) {
+          setSchema(clientSchema);
+        }
       });
-  }, []);
+
+  }, [endpoint]);
 
   const { screen } = queryParams;
 
