@@ -6,7 +6,7 @@ import {
   ExplorerProvider,
   useExplorer,
 } from "./components/ExplorerContext";
-// import { BooleanParam, StringParam } from "use-query-params";
+import { BooleanParam, StringParam } from "use-query-params";
 import "./index.scss";
 
 /**
@@ -29,8 +29,8 @@ hooks.addFilter(
                 // Toggle the state of the explorer context
                 toggleExplorer();
               }}
-              label="Explorer"
-              title="Explorer"
+              label="Query Composer"
+              title="Query Composer"
             />
           );
         }}
@@ -56,17 +56,25 @@ hooks.addFilter(
 // /**
 //  * Wrap the GraphiQL App with the explorer context
 //  */
-hooks.addFilter("graphiql_app", "graphiql-explorer", (app) => {
-  return <ExplorerProvider>{app}</ExplorerProvider>;
-}, 99);
+hooks.addFilter(
+  "graphiql_app",
+  "graphiql-explorer",
+  (app, { appContext }) => {
+    return <ExplorerProvider appContext={appContext}>{app}</ExplorerProvider>;
+  },
+  99
+);
 
-// hooks.addFilter(
-//   "graphiql_query_params_provider_config",
-//   "graphiql-explorer",
-//   (config) => {
-//     return {
-//       ...config,
-//       ...{ isExplorerOpen: BooleanParam, explorerIsOpen: StringParam },
-//     };
-//   }
-// );
+hooks.addFilter(
+  "graphiql_query_params_provider_config",
+  "graphiql-explorer",
+  (config) => {
+    return {
+      ...config,
+      ...{
+        isQueryComposerOpen: BooleanParam,
+        explorerIsOpen: StringParam,
+      },
+    };
+  }
+);

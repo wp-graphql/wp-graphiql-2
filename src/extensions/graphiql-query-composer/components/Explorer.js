@@ -56,7 +56,7 @@ const Wrapper = ({ schema, children }) => {
  * @returns {JSX.Element}
  * @constructor
  */
-const Explorer = props => {
+const Explorer = (props) => {
   const { query, setQuery } = props;
   const { schema } = useAppContext();
 
@@ -70,7 +70,7 @@ const Explorer = props => {
     if (document !== parsedQuery) {
       setDocument(parsedQuery);
     }
-  });
+  }, [query]);
 
   return (
     <>

@@ -1,49 +1,75 @@
-import { useContext, createContext, useState } from "@wordpress/element";
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+} from "@wordpress/element";
+import { hooks } from "../index";
 
 export const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);
 
 /**
  * Get the enpoint from the localized settings provided by WordPress when it enqueues the app
- * @returns 
+ * @returns
  */
 export const getEndpoint = () => {
-    return window?.wpGraphiQLSettings?.graphqlEndpoint ?? null;
+  return window?.wpGraphiQLSettings?.graphqlEndpoint ?? null;
 };
 
 /**
  * Get the nonce from the localized settings provided by WordPress when it enqueues the app
- * 
- * @returns 
+ *
+ * @returns
  */
 export const getNonce = () => {
-    return window?.wpGraphiQLSettings?.nonce ?? null;
-}
+  return window?.wpGraphiQLSettings?.nonce ?? null;
+};
 
 /**
  * AppContextProvider
- * 
+ *
  * This provider maintains context useful for the entire application.
- * 
- * @param {*} param0 
- * @returns 
+ *
+ * @param {*} param0
+ * @returns
  */
-export const AppContextProvider = ({ children }) => {
-    
-    const [ schema, setSchema ] = useState(null);
+export const AppContextProvider = ({
+  children,
+  setQueryParams,
+  queryParams,
+}) => {
+  const [schema, setSchema] = useState(null);
+  const [nonce, setNonce] = useState(getNonce());
+  const [endpoint, setEndpoint] = useState(getEndpoint());
+  const [_queryParams, _setQueryParams] = useState(queryParams);
 
-    let appContextValue = {
-        endpoint: getEndpoint(),
-        nonce: getNonce(),
-        schema,
-        setSchema, 
-    }
+  const updateQueryParams = (newQueryParams) => {
+    _setQueryParams(newQueryParams);
+    setQueryParams(newQueryParams);
+  };
 
-    // appContextValue = hooks.applyFilters( 'graphiql_app_context', appContextValue );
+  let appContextValue = {
+    endpoint,
+    setEndpoint,
+    nonce,
+    setNonce,
+    schema,
+    setSchema,
+    queryParams: _queryParams,
+    setQueryParams: updateQueryParams,
+  };
 
-    return (
-        <AppContext.Provider value={ appContextValue }>
-            {children}
-        </AppContext.Provider>
-    )
-}
+  let filteredAppContextValue = hooks.applyFilters(
+    "graphiql_app_context",
+    appContextValue
+  );
+
+  // appContextValue = hooks.applyFilters( 'graphiql_app_context', appContextValue );
+
+  return (
+    <AppContext.Provider value={filteredAppContextValue}>
+      {children}
+    </AppContext.Provider>
+  );
+};

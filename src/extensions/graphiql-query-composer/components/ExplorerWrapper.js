@@ -11,29 +11,41 @@ const { useEffect } = wp.element;
  * @constructor
  */
 const ExplorerWrapper = (props) => {
-  const { isExplorerOpen, toggleExplorer } = useExplorer();
+  const { isQueryComposerOpen, toggleExplorer } = useExplorer();
 
   const { children } = props;
   const width = `400px`;
 
-  return isExplorerOpen ? (
+  return isQueryComposerOpen ? (
     <div
-      className="doc-explorer-app docExplorerWrap antd-app"
+      className="docExplorerWrap doc-explorer-app"
       style={{
         height: "100%",
         width: width,
         minWidth: width,
         zIndex: 8,
-        display: isExplorerOpen ? "flex" : "none",
+        display: isQueryComposerOpen ? "flex" : "none",
         flexDirection: "column",
         overflow: "hidden",
       }}
     >
       <div className="doc-explorer">
         <div className="doc-explorer-title-bar">
-          <div className="doc-explorer-title">Explorer</div>
+          <div className="doc-explorer-title">Query Composer</div>
           <div className="doc-explorer-rhs">
-            <div className="docExplorerHide" onClick={toggleExplorer}>
+            <div
+              className="docExplorerHide"
+              style={{
+                cursor: "pointer",
+                fontSize: "18px",
+                margin: "-7px -8px -6px 0",
+                padding: "18px 16px 15px 12px",
+                background: 0,
+                border: 0,
+                lineHeight: "14px",
+              }}
+              onClick={toggleExplorer}
+            >
               {"\u2715"}
             </div>
           </div>
@@ -41,10 +53,15 @@ const ExplorerWrapper = (props) => {
         <div
           className="doc-explorer-contents"
           style={{
-            padding: "0px",
-            /* Unset overflowY since docExplorerWrap sets it and it'll
-                        cause two scrollbars (one for the container and one for the schema tree) */
-            overflowY: "unset",
+            backgroundColor: "#ffffff",
+            borderTop: `1px solid #d6d6d6`,
+            bottom: 0,
+            left: 0,
+            overflowY: "scroll",
+            padding: `0`,
+            right: 0,
+            top: `47px`,
+            position: "absolute",
           }}
         >
           {children}

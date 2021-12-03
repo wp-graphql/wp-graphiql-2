@@ -15,7 +15,6 @@ import RootView from "./RootView";
 import AddOperations from "./AddOperations";
 
 const { useAppContext } = wpGraphiQL;
-
 const { GraphQLObjectType, print } = wpGraphiQL.GraphQL;
 
 const { useState, useEffect, useRef } = wp.element;

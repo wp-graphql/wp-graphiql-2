@@ -7,17 +7,19 @@ import {
 import { Layout, Menu } from "antd";
 import { useState, useEffect } from "@wordpress/element";
 import styled from "styled-components";
-import { gql } from "@apollo/client";
 import { hooks } from "../..";
 import Help from "../../screens/Help/Help";
-import { withDefault } from "serialize-query-params";
-
-import { withQueryParams, useQueryParams, StringParam } from "use-query-params";
+import {
+  withQueryParams,
+  useQueryParams,
+  StringParam,
+  withDefault,
+} from "use-query-params";
 import GraphiQL from "../../screens/GraphiQL/GraphiQL";
 import { client } from "../../data/client";
-
-const { useAppContext } = wpGraphiQL;
-import { getIntrospectionQuery, buildClientSchema } from "graphql";
+import gql from "graphql-tag";
+const { useAppContext, GraphQL } = wpGraphiQL;
+const { getIntrospectionQuery, buildClientSchema } = GraphQL;
 
 const { Sider } = Layout;
 
@@ -131,10 +133,13 @@ const Router = (props) => {
   });
 
   const { endpoint, schema, setSchema } = useAppContext();
-  
+
+  const { screen } = queryParams;
+
+  const [screens, setScreens] = useState(getScreens());
 
   useEffect(() => {
-    if ( null !== schema ) {
+    if (null !== schema) {
       return;
     }
 
@@ -148,16 +153,11 @@ const Router = (props) => {
       })
       .then((res) => {
         const clientSchema = res?.data ? buildClientSchema(res.data) : null;
-        if ( clientSchema !== schema ) {
+        if (clientSchema !== schema) {
           setSchema(clientSchema);
         }
       });
-
   }, [endpoint]);
-
-  const { screen } = queryParams;
-
-  const [screens, setScreens] = useState(getScreens());
 
   const getActiveScreenName = () => {
     // find the matching screen

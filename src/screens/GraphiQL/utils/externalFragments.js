@@ -1,4 +1,4 @@
-import { parse } from "graphql/index.js";
+const { parse } = window.wpGraphiQL.GraphQL;
 
 /**
  * Convert fragment strings to Fragment Definitions for use

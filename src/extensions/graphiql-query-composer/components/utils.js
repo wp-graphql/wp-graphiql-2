@@ -127,20 +127,20 @@ export const defaultColors = {
 };
 
 export const defaultArrowOpen = (
-  <svg width="12" height="9">
+  isQueryComposerOpeng width="12" height="9">
     <path fill="#666" d="M 0 2 L 9 2 L 4.5 7.5 z" />
   </svg>
 );
 
 export const defaultArrowClosed = (
-  <svg width="12" height="9">
+  isQueryComposerOpeng width="12" height="9">
     <path fill="#666" d="M 0 0 L 0 9 L 5.5 4.5 z" />
   </svg>
 );
 
 export const defaultCheckboxChecked = (
-  <svg
-    style={{ marginRight: "3px", marginLeft: "-3px" }}
+  isQueryComposerOpeng
+    style={{ marginRight: "3px" }}
     width="12"
     height="12"
     viewBox="0 0 18 18"
@@ -155,8 +155,8 @@ export const defaultCheckboxChecked = (
 );
 
 export const defaultCheckboxUnchecked = (
-  <svg
-    style={{ marginRight: "3px", marginLeft: "-3px" }}
+  isQueryComposerOpeng
+    style={{ marginRight: "3px" }}
     width="12"
     height="12"
     viewBox="0 0 18 18"

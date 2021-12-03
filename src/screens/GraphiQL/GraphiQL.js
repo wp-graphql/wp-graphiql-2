@@ -1,12 +1,17 @@
 import GraphiQL from "graphiql";
-import { useRef } from "@wordpress/element";
+import { useRef, useEffect } from "@wordpress/element";
 import { getFetcher } from "../../utils/fetcher";
 import styled from "styled-components";
 import "./style.scss";
 import { Spin } from "antd";
 import GraphiQLToolbar from "./components/GraphiQLToolbar";
-import { GraphiQLContextProvider, useGraphiQLContext } from "./context/GraphiQLContext";
-const { hooks, useAppContext } = wpGraphiQL;
+import {
+  GraphiQLContextProvider,
+  useGraphiQLContext,
+} from "./context/GraphiQLContext";
+
+const { hooks, useAppContext, GraphQL } = wpGraphiQL;
+const { parse, specifiedRules } = GraphQL;
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -34,7 +39,7 @@ const StyledWrapper = styled.div`
 
 /**
  * The GraphiQL screen.
- * 
+ *
  * @returns
  */
 const GraphiQLScreen = () => {
@@ -42,22 +47,50 @@ const GraphiQLScreen = () => {
 
   const appContext = useAppContext();
   const graphiqlContext = useGraphiQLContext();
-  const { query } = graphiqlContext;
+  const { query, setQuery, externalFragments } = graphiqlContext;
   const { endpoint, nonce, schema, setSchema } = appContext;
 
   let fetcher = getFetcher(endpoint, { nonce });
   fetcher = hooks.applyFilters("graphiql_fetcher", fetcher, appContext);
 
-  const beforeGraphiql = hooks.applyFilters(
-    "graphiql_before_graphiql",
-    [],
-    { ...appContext, ...graphiqlContext }
-  );
-  const afterGraphiQL = hooks.applyFilters(
-    "graphiql_after_graphiql",
-    [],
-    { ...appContext, ...graphiqlContext }
-  );
+  const beforeGraphiql = hooks.applyFilters("graphiql_before_graphiql", [], {
+    ...appContext,
+    ...graphiqlContext,
+  });
+  const afterGraphiQL = hooks.applyFilters("graphiql_after_graphiql", [], {
+    ...appContext,
+    ...graphiqlContext,
+  });
+
+  /**
+   * Callback when the query is edited in GraphiQL
+   *
+   * @param editedQuery
+   */
+  const handleEditQuery = (editedQuery) => {
+    let update = false;
+
+    if (editedQuery === query) {
+      return;
+    }
+
+    if (null === editedQuery || "" === editedQuery) {
+      update = true;
+    } else {
+      try {
+        parse(editedQuery);
+        update = true;
+      } catch (error) {
+        return;
+      }
+    }
+
+    // If the query is valid and should be updated
+    if (update) {
+      // Update the state with the new query
+      setQuery(editedQuery);
+    }
+  };
 
   return (
     <StyledWrapper data-testid="wp-graphiql-wrapper" id="wp-graphiql-wrapper">
@@ -75,6 +108,26 @@ const GraphiQLScreen = () => {
         }}
         schema={schema}
         query={query}
+        onEditQuery={handleEditQuery}
+        validationRules={specifiedRules}
+        readOnly={false}
+        externalFragments={externalFragments}
+        // @todo: Header editor should be enabled at some point,
+        // and should work with the AuthSwitch as that really is
+        // modifying the headers anyway.
+        headerEditorEnabled={false}
+        onSchemaChange={(newSchema) => {
+          if (schema !== newSchema) {
+            setSchema(newSchema);
+          }
+        }}
+        variables={JSON.stringify(
+          {
+            first: 10,
+          },
+          null,
+          2
+        )}
       >
         <GraphiQL.Toolbar>
           <GraphiQLToolbar graphiql={() => graphiql} />
@@ -91,15 +144,16 @@ const GraphiQLScreen = () => {
 };
 
 const GraphiQLScreenWithContext = () => {
-  const { schema } = useAppContext();
+  const appContext = useAppContext();
+  const { schema } = appContext;
 
   return schema ? (
-    <GraphiQLContextProvider>
+    <GraphiQLContextProvider appContext={appContext}>
       <GraphiQLScreen />
     </GraphiQLContextProvider>
   ) : (
     <Spin style={{ margin: `50px` }} />
   );
-}
+};
 
 export default GraphiQLScreenWithContext;

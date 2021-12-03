@@ -1,6 +1,6 @@
 import Router from "../Router/Router.js";
-import { useEffect } from "@wordpress/element";
-import { QueryParamProvider } from "use-query-params";
+import { useEffect, useState } from "@wordpress/element";
+import { QueryParamProvider, QueryParams, StringParam } from "use-query-params";
 const { hooks, AppContextProvider, useAppContext } = window.wpGraphiQL;
 
 /**
@@ -15,7 +15,7 @@ const FilteredApp = () => {
   /**
    * Pass the router through a filter, allowing
    */
-  return hooks.applyFilters("graphiql_app", <Router />, appContext);
+  return hooks.applyFilters("graphiql_app", <Router />, { appContext });
 };
 
 /**
@@ -24,17 +24,37 @@ const FilteredApp = () => {
  * @returns
  */
 export const AppWithContext = () => {
+  const filteredQueryParamsConfig = hooks.applyFilters(
+    "graphiql_query_params_provider_config",
+    {
+      query: StringParam,
+      variables: StringParam,
+    }
+  );
+
+  const [render, setRender] = useState(false);
+
   useEffect(() => {
-    hooks.doAction("graphiql_rendered");
+    if (!render) {
+      hooks.doAction("graphiql_rendered");
+      setRender(true);
+    }
   }, []);
 
-  return (
+  return render ? (
     <QueryParamProvider>
-      <AppContextProvider>
-        <FilteredApp />
-      </AppContextProvider>
+      <QueryParams config={filteredQueryParamsConfig}>
+        {(renderProps) => {
+          const { query, setQuery } = renderProps;
+          return (
+            <AppContextProvider queryParams={query} setQueryParams={setQuery}>
+              <FilteredApp />
+            </AppContextProvider>
+          );
+        }}
+      </QueryParams>
     </QueryParamProvider>
-  );
+  ) : null;
 };
 
 export default AppWithContext;

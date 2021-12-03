@@ -25,9 +25,9 @@ const Help = () => {
     <StyledWrapper>
       <h2>Help</h2>
       <p>
-        On this page you will find resources to help you understand GraphQL, how
-        to use it with WordPress, and how to customize it and make it work for
-        you.
+        On this page you will find resources to help you understand WPGraphQL,
+        how to use GraphQL with WordPress, how to customize it and make it work
+        for you, and how to get plugged into the community.
       </p>
       <Divider />
       <h3>Documentation</h3>

@@ -268,7 +268,12 @@ const RootView = (props) => {
           }
           extra={operationActions}
         >
-          <div>
+          <div
+            style={{
+              maxHeight: `500px`,
+              overflowY: "scroll",
+            }}
+          >
             {Object.keys(fields)
               .sort()
               .map((fieldName) => (

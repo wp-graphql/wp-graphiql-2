@@ -1,10 +1,4 @@
-import { render } from "@testing-library/react";
-import {
-  useContext,
-  useState,
-  createContext,
-  useEffect,
-} from "@wordpress/element";
+import { useContext, useState, createContext } from "@wordpress/element";
 const { hooks } = wpGraphiQL;
 
 export const AuthSwitchContext = createContext();

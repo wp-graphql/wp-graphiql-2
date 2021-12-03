@@ -1,5 +1,5 @@
 const { useContext, useState, createContext, useEffect } = wp.element;
-const { hooks, useAppContext } = wpGraphiQL;
+const { hooks, useAppContext } = window.wpGraphiQL;
 
 /**
  * Create context to maintain state for the Explorer
@@ -23,19 +23,22 @@ export const useExplorer = () => {
  */
 export const ExplorerProvider = ({ children }) => {
   // Access the query params from AppContext
-  const { queryParams, setQueryParams } = useAppContext();
+  const appContext = useAppContext();
+
+  const { queryParams, setQueryParams } = appContext;
 
   // Determine the default state of the explorer based
   // on queryParam, then localStorage
   const getExplorerDefaultOpenState = () => {
     const localValue =
-      window?.localStorage.getItem("graphiql:isExplorerOpen") ?? null;
+      window?.localStorage.getItem("graphiql:isQueryComposerOpen") ?? null;
 
     // no-longer-supported query param
-    const deprecatedQueryParam = queryParams?.explorerIsOpen ?? null;
+    const deprecatedQueryParam =
+      queryParams?.explorerIsOpen === "true" ? true : false;
 
     // get the state of the explorer from the url param
-    const urlState = queryParams?.isExplorerOpen ?? deprecatedQueryParam;
+    const urlState = queryParams?.isQueryComposerOpen ?? deprecatedQueryParam;
 
     // if the urlState is set, use it
     if (null !== urlState) {
@@ -54,7 +57,7 @@ export const ExplorerProvider = ({ children }) => {
   /**
    * Handle state for the explorer
    */
-  const [isExplorerOpen, setIsExplorerOpen] = useState(
+  const [isQueryComposerOpen, setisQueryComposerOpen] = useState(
     getExplorerDefaultOpenState()
   );
 
@@ -66,30 +69,25 @@ export const ExplorerProvider = ({ children }) => {
    * @param newState
    */
   const updateExplorer = (newState) => {
-    if (isExplorerOpen !== newState) {
+    if (isQueryComposerOpen !== newState) {
       // update component state
-      setIsExplorerOpen(newState);
+      setisQueryComposerOpen(newState);
     }
 
-    const newQueryParams = { ...queryParams, isExplorerOpen: newState };
+    // update the url query param, remove deprecated "explorerIsOpen" param
+    const newQueryParams = {
+      ...queryParams,
+      isQueryComposerOpen: newState,
+      explorerIsOpen: undefined,
+    };
 
-    console.log({
-      updateExplorer: {
-        queryParams,
-        newQueryParams,
-      },
-    });
-
-    // // Delete deprecated query param
-    // delete( newQueryParams.explorerIsOpen )
-    //
     if (JSON.stringify(newQueryParams) !== JSON.stringify(queryParams)) {
       // Update the url query param
       setQueryParams(newQueryParams);
     }
-    //
-    // // Store the state in localStorage
-    // window?.localStorage.setItem("graphiql:isExplorerOpen", `${newState}`);
+
+    // Store the state in localStorage
+    window?.localStorage.setItem("graphiql:isQueryComposerOpen", `${newState}`);
   };
 
   /**
@@ -97,7 +95,7 @@ export const ExplorerProvider = ({ children }) => {
    */
   const toggleExplorer = () => {
     // get the toggledState
-    const toggledState = !isExplorerOpen;
+    const toggledState = !isQueryComposerOpen;
 
     // Set the explorer to the toggledState
     updateExplorer(toggledState);
@@ -107,7 +105,7 @@ export const ExplorerProvider = ({ children }) => {
    * Filter the default state of the context
    */
   const value = hooks.applyFilters("graphiql_explorer_context_default_value", {
-    isExplorerOpen,
+    isQueryComposerOpen,
     toggleExplorer,
   });
 
