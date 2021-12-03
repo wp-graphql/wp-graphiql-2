@@ -15,10 +15,11 @@ core as the default GraphiQL IDE that will be supported and maintained with WPGr
 
 ## Installation / Activation
 
-Download, install and activate this plugin as you would any other WordPress plugin.
+At this moment, this plugin is only available from Github, so you'll need to download the Zip or clone the repo. 
 
-When activating this plugin, it will prevent the GraphiQL that ships with WPGraphQL from
-loading and will load the new version instead.
+The repo does include the built JavaScript files, so you can install the zip of the plugin to your WordPress install. 
+
+In the future, the plugin will also be available on Packagist for installing via Composer and available on WordPress.org
 
 ## Why rebuild WPGraphiQL?
 
