@@ -1,6 +1,16 @@
 <?php
 /**
  * Plugin Name: WPGraphiQL 2.0
+ * Plugin Version: 0.1.0
+ * Plugin Description: This is the temporary home of the WPGraphiQL 2.0 plugin which will eventually be merged into WPGraphQL core. New features will be iterated on in this repo and progressively added to WPGraphQL core.
+ * Plugin URI: https://github.com/wp-graphql/wp-graphiql-2
+ * Author: WPGraphQL
+ * Author URI: https://wpgraphql.com
+ * License: GPL-3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
+ * Requires PHP: 7.1
+ * Tested up to: 5.8
+ * Text Domain: wp-graphiql
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -63,26 +73,6 @@ add_action( 'admin_enqueue_scripts', function() {
 		$composer_asset_file['version']
 	);
 
-	// // Enqueue the assets for the exporter before enqueueing the app,
-	// // so that the JS in the exporter that hooks into the app will be available
-	// // by time the app is enqueued
-	// $exporter_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/codeExporter.asset.php');
-
-	// wp_enqueue_script(
-	// 	'wp-graphiql-code-exporter', // Handle.
-	// 	plugins_url( 'build/codeExporter.js', __FILE__ ),
-	// 	array_merge( ['wp-graphiql'], $exporter_asset_file['dependencies'] ),
-	// 	$exporter_asset_file['version'],
-	// 	true
-	// );
-
-	// wp_enqueue_style(
-	// 	'wp-graphiql-code-exporter',
-	// 	plugins_url( 'build/codeExporter.css', __FILE__ ),
-	// 	[ 'wp-components' ],
-	// 	$exporter_asset_file['version']
-	// );
-
 	$auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/graphiqlAuthSwitch.asset.php');
 
 	wp_enqueue_script(
@@ -92,30 +82,6 @@ add_action( 'admin_enqueue_scripts', function() {
 		$auth_switch_asset_file['version'],
 		true
 	);
-
-	// wp_enqueue_style(
-	// 	'wp-graphiql-auth-switch',
-	// 	plugins_url( 'build/authSwitch.css', __FILE__ ),
-	// 	[ 'wp-components' ],
-	// 	$auth_switch_asset_file['version']
-	// );
-
-	// $document_tabs_file = include( plugin_dir_path( __FILE__ ) . 'build/documentTabs.asset.php');
-
-	// wp_enqueue_script(
-	// 	'wp-graphiql-document-tabs', // Handle.
-	// 	plugins_url( 'build/documentTabs.js', __FILE__ ),
-	// 	array_merge( ['wp-graphiql'], $document_tabs_file['dependencies'] ),
-	// 	$document_tabs_file['version'],
-	// 	true
-	// );
-
-//	wp_enqueue_style(
-//		'wp-graphiql-auth-switch',
-//		plugins_url( 'build/authSwitch.css', __FILE__ ),
-//		[ 'wp-components' ],
-//		$auth_switch_asset_file['version']
-//	);
 
 	$app_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/app.asset.php');
 
