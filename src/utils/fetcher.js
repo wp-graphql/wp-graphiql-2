@@ -1,5 +1,3 @@
-import "whatwg-fetch";
-
 /**
  * Returns the authenticated fetcher
  *
