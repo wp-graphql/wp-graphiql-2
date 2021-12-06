@@ -36,6 +36,10 @@ export const AppWithContext = () => {
 
   useEffect(() => {
     if (!render) {
+      const container = document.getElementById("graphiql");
+      if (container) {
+        container.classList.remove("graphiql-container");
+      }
       hooks.doAction("graphiql_rendered");
       setRender(true);
     }
