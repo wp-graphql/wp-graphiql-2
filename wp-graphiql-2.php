@@ -49,40 +49,6 @@ add_action( 'admin_enqueue_scripts', function() {
 		true
 	);
 
-	// Extensions looking to extend GraphiQL can hook in here,
-	// after the window object is established, but before the App renders
-	do_action( 'enqueue_graphiql_extension' );
-
-	// Enqueue the assets for the Explorer before enqueueing the app,
-	// so that the JS in the exporter that hooks into the app will be available
-	// by time the app is enqueued
-	$composer_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/graphiqlQueryComposer.asset.php');
-
-	wp_enqueue_script(
-		'wp-graphiql-query-composer', // Handle.
-		plugins_url( 'build/graphiqlQueryComposer.js', __FILE__ ),
-		array_merge( ['wp-graphiql'], $composer_asset_file['dependencies'] ),
-		$composer_asset_file['version'],
-		true
-	);
-
-	wp_enqueue_style(
-		'wp-graphiql-query-composer',
-		plugins_url( 'build/graphiqlQueryComposer.css', __FILE__ ),
-		[ 'wp-components' ],
-		$composer_asset_file['version']
-	);
-
-	$auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/graphiqlAuthSwitch.asset.php');
-
-	wp_enqueue_script(
-		'wp-graphiql-auth-switch', // Handle.
-		plugins_url( 'build/graphiqlAuthSwitch.js', __FILE__ ),
-		array_merge( ['wp-graphiql'], $auth_switch_asset_file['dependencies'] ),
-		$auth_switch_asset_file['version'],
-		true
-	);
-
 	$app_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/app.asset.php');
 
 	wp_enqueue_script(
@@ -111,5 +77,63 @@ add_action( 'admin_enqueue_scripts', function() {
 		]
 	);
 
+	// Extensions looking to extend GraphiQL can hook in here,
+	// after the window object is established, but before the App renders
+	do_action( 'enqueue_graphiql_extension' );
+
+
 });
 
+/**
+ * Enqueue extension styles and scripts
+ * 
+ * These extensions are part of WPGraphiQL core, but were built in a way
+ * to showcase how extension APIs can be used to extend WPGraphiQL
+ */
+add_action( 'enqueue_graphiql_extension', 'graphiql_enqueue_query_composer' );
+add_action( 'enqueue_graphiql_extension', 'graphiql_enqueue_auth_switch' );
+
+/**
+ * Enqueue the GraphiQL Auth Switch extension, which adds a button to the GraphiQL toolbar
+ * that allows the user to switch between the logged in user and the current user
+ */
+function graphiql_enqueue_auth_switch() {
+
+	$auth_switch_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/graphiqlAuthSwitch.asset.php');
+
+	wp_enqueue_script(
+		'wp-graphiql-auth-switch', // Handle.
+		plugins_url( 'build/graphiqlAuthSwitch.js', __FILE__ ),
+		array_merge( ['wp-graphiql', 'wp-graphiql-app'], $auth_switch_asset_file['dependencies'] ),
+		$auth_switch_asset_file['version'],
+		true
+	);
+}
+
+/**
+ * Enqueue the Query Composer extension, which adds a button to the GraphiQL toolbar
+ * that allows the user to open the Query Composer and compose a query with a form-based UI
+ */
+function graphiql_enqueue_query_composer() {
+
+	// Enqueue the assets for the Explorer before enqueueing the app,
+	// so that the JS in the exporter that hooks into the app will be available
+	// by time the app is enqueued
+	$composer_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/graphiqlQueryComposer.asset.php');
+
+	wp_enqueue_script(
+		'wp-graphiql-query-composer', // Handle.
+		plugins_url( 'build/graphiqlQueryComposer.js', __FILE__ ),
+		array_merge( ['wp-graphiql', 'wp-graphiql-app'], $composer_asset_file['dependencies'] ),
+		$composer_asset_file['version'],
+		true
+	);
+
+	wp_enqueue_style(
+		'wp-graphiql-query-composer',
+		plugins_url( 'build/graphiqlQueryComposer.css', __FILE__ ),
+		[ 'wp-components' ],
+		$composer_asset_file['version']
+	);
+
+}
