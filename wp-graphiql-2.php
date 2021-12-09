@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: WPGraphiQL 2.0
- * Plugin Version: 0.1.1
- * Plugin Description: This is the temporary home of the WPGraphiQL 2.0 plugin which will eventually be merged into WPGraphQL core. New features will be iterated on in this repo and progressively added to WPGraphQL core.
+ * Version: 0.1.1
+ * Description: This is the temporary home of the WPGraphiQL 2.0 plugin which will eventually be merged into WPGraphQL core. New features will be iterated on in this repo and progressively added to WPGraphQL core.
  * Plugin URI: https://github.com/wp-graphql/wp-graphiql-2
  * Author: WPGraphQL
  * Author URI: https://wpgraphql.com
@@ -86,7 +86,7 @@ add_action( 'admin_enqueue_scripts', function() {
 
 /**
  * Enqueue extension styles and scripts
- * 
+ *
  * These extensions are part of WPGraphiQL core, but were built in a way
  * to showcase how extension APIs can be used to extend WPGraphiQL
  */
