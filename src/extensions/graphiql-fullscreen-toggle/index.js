@@ -4,6 +4,7 @@ import "./index.scss";
 const FullScreenToggleButton = () => {
     return (
         <button 
+            id='graphiql-fullscreen-toggle'
             class="toolbar-button" 
             title="Toggle Full Screen" 
             onClick={() => { document.body.classList.toggle("graphiql-fullscreen");}}
