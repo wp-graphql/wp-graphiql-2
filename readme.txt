@@ -3,7 +3,7 @@ Contributors: jasonbahl
 Tags: GraphQL, WPGraphQL, GraphiQL, IDE, DevTools, Developer Tools, Tooling, Testing, Productivity, Headless, Gatsby, React, NextJS
 Requires at least: 5.5
 Requires PHP: 7.1
-Stable Tag: 0.1.1
+Stable Tag: 0.1.2
 License: GPL-3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,7 +15,14 @@ This plugin is intended to be used with WPGraphQL (https://wordpress.org/plugins
 
 == Changelog ==
 
-= 0.1.1 = 
+= 0.1.2 =
+
+**New Feature**
+
+- ([#14](https://github.com/wp-graphql/wp-graphiql-2/pull/14)): Wraps the app with ApolloProvider. Extensions can make use of Apollo Client functions such as useQuery, etc.
+
+
+= 0.1.1 =
 
 **Chores/Bugfixes**
 
@@ -25,8 +32,8 @@ This plugin is intended to be used with WPGraphQL (https://wordpress.org/plugins
 = 0.1.0
 
 - Introduce a new "Router" component with a left-side menu. This is setting the foundation for providing more tools in the future.
-- Reorganizes the code 
+- Reorganizes the code
 
-= 0.0.1 = 
+= 0.0.1 =
 
 - Initial Release
