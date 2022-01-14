@@ -92,6 +92,7 @@ add_action( 'admin_enqueue_scripts', function() {
  */
 add_action( 'enqueue_graphiql_extension', 'graphiql_enqueue_query_composer' );
 add_action( 'enqueue_graphiql_extension', 'graphiql_enqueue_auth_switch' );
+add_action( 'enqueue_graphiql_extension', 'graphiql_enqueue_fullscreen_toggle' );
 
 /**
  * Enqueue the GraphiQL Auth Switch extension, which adds a button to the GraphiQL toolbar
@@ -136,4 +137,29 @@ function graphiql_enqueue_query_composer() {
 		$composer_asset_file['version']
 	);
 
+}
+
+/**
+ * Enqueue the GraphiQL Fullscreen Toggle extension, which adds a button to the GraphiQL toolbar
+ * that allows the user to toggle the fullscreen mode
+ */
+function graphiql_enqueue_fullscreen_toggle() {
+	
+	$fullscreen_toggle_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/graphiqlFullscreenToggle.asset.php');
+
+	wp_enqueue_script(
+		'wp-graphiql-fullscreen-toggle', // Handle.
+		plugins_url( 'build/graphiqlFullscreenToggle.js', __FILE__ ),
+		array_merge( ['wp-graphiql', 'wp-graphiql-app'], $fullscreen_toggle_asset_file['dependencies'] ),
+		$fullscreen_toggle_asset_file['version'],
+		true
+	);
+
+	wp_enqueue_style(
+		'wp-graphiql-fullscreen-toggle',
+		plugins_url( 'build/graphiqlFullscreenToggle.css', __FILE__ ),
+		[ 'wp-components' ],
+		$fullscreen_toggle_asset_file['version']
+	);
+	
 }
