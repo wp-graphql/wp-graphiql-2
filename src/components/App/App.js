@@ -1,6 +1,9 @@
 import Router from "../Router/Router.js";
 import { useEffect, useState } from "@wordpress/element";
 import { QueryParamProvider, QueryParams, StringParam } from "use-query-params";
+import {getEndpoint} from "../../context/AppContext";
+import { client } from '../../data/client';
+import { ApolloProvider } from '@apollo/client'
 const { hooks, AppContextProvider, useAppContext } = window.wpGraphiQL;
 
 /**
@@ -25,11 +28,11 @@ const FilteredApp = () => {
  */
 export const AppWithContext = () => {
   const filteredQueryParamsConfig = hooks.applyFilters(
-    "graphiql_query_params_provider_config",
-    {
-      query: StringParam,
-      variables: StringParam,
-    }
+      "graphiql_query_params_provider_config",
+      {
+        query: StringParam,
+        variables: StringParam,
+      }
   );
 
   const [render, setRender] = useState(false);
@@ -46,18 +49,21 @@ export const AppWithContext = () => {
   }, []);
 
   return render ? (
-    <QueryParamProvider>
-      <QueryParams config={filteredQueryParamsConfig}>
-        {(renderProps) => {
-          const { query, setQuery } = renderProps;
-          return (
-            <AppContextProvider queryParams={query} setQueryParams={setQuery}>
-              <FilteredApp />
-            </AppContextProvider>
-          );
-        }}
-      </QueryParams>
-    </QueryParamProvider>
+      <QueryParamProvider>
+        <QueryParams config={filteredQueryParamsConfig}>
+          {(renderProps) => {
+            const {query, setQuery} = renderProps;
+            console.log( getEndpoint() )
+            return (
+                <AppContextProvider queryParams={query} setQueryParams={setQuery}>
+                  <ApolloProvider client={ client(getEndpoint() ) } >
+                    <FilteredApp/>
+                  </ApolloProvider>
+                </AppContextProvider>
+            );
+          }}
+        </QueryParams>
+      </QueryParamProvider>
   ) : null;
 };
 
