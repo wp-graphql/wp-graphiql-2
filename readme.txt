@@ -17,7 +17,7 @@ This plugin is intended to be used with WPGraphQL (https://wordpress.org/plugins
 
 = 0.1.3 =
 
-**New Feature**
+**Chores/Bugfixes**
 
 - ([#16](https://github.com/wp-graphql/wp-graphiql-2/pull/16)): Fixes a bug where the variables were always being reset to a hardcoded value.
 
