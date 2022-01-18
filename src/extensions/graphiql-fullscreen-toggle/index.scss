@@ -12,3 +12,11 @@
     align-items: center;
     padding: 8px;
 }
+
+.graphiql-fullscreen #wp-graphiql-wrapper .expand-icon, 
+#wp-graphiql-wrapper .contract-icon{
+    display: none;
+}
+.graphiql-fullscreen #wp-graphiql-wrapper .contract-icon{
+    display: block;
+}
