@@ -10,6 +10,9 @@
   .history-title {
     padding-top: 5px;
   }
+  .doc-explorer-back {
+    overflow: hidden;
+  }
   height: 100%;
   display: flex;
   flex-direction: row;

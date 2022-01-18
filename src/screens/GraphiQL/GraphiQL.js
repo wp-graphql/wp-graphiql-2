@@ -1,14 +1,14 @@
 import GraphiQL from "graphiql";
-import { useRef, useEffect } from "@wordpress/element";
+import { useRef } from "@wordpress/element";
 import { getFetcher } from "../../utils/fetcher";
 import styled from "styled-components";
-import "./style.scss";
 import { Spin } from "antd";
 import GraphiQLToolbar from "./components/GraphiQLToolbar";
 import {
   GraphiQLContextProvider,
   useGraphiQLContext,
 } from "./context/GraphiQLContext";
+import "./style.scss";
 
 const { hooks, useAppContext, GraphQL } = wpGraphiQL;
 const { parse, specifiedRules } = GraphQL;
@@ -21,6 +21,9 @@ const StyledWrapper = styled.div`
   .doc-explorer-title,
   .history-title {
     padding-top: 5px;
+  }
+  .doc-explorer-back {
+    overflow: hidden;
   }
   height: 100%;
   display: flex;
@@ -47,7 +50,8 @@ const GraphiQLScreen = () => {
 
   const appContext = useAppContext();
   const graphiqlContext = useGraphiQLContext();
-  const { query, setQuery, externalFragments, variables, setVariables } = graphiqlContext;
+  const { query, setQuery, externalFragments, variables, setVariables } =
+    graphiqlContext;
   const { endpoint, nonce, schema, setSchema } = appContext;
 
   let fetcher = getFetcher(endpoint, { nonce });

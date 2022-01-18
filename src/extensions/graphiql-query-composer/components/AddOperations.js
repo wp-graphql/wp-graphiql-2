@@ -18,7 +18,7 @@ const AddOperations = (props) => {
         style={{
           padding: `10px 10px 0 10px`,
           borderTop: `1px solid #ccc`,
-          overflowY: `scroll`,
+          overflowY: `hidden`,
           minHeight: `${height}px`,
         }}
       >

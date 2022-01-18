@@ -332,7 +332,7 @@ const QueryBuilder = (props) => {
       <div
         style={{
           flexGrow: 1,
-          overflowY: "scroll",
+          overflowY: "hidden",
           width: `100%`,
           padding: "10px",
         }}
