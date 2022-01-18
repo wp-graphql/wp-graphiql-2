@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WPGraphiQL 2.0
- * Version: 0.1.2
+ * Version: 0.1.3
  * Description: This is the temporary home of the WPGraphiQL 2.0 plugin which will eventually be merged into WPGraphQL core. New features will be iterated on in this repo and progressively added to WPGraphQL core.
  * Plugin URI: https://github.com/wp-graphql/wp-graphiql-2
  * Author: WPGraphQL
@@ -144,7 +144,7 @@ function graphiql_enqueue_query_composer() {
  * that allows the user to toggle the fullscreen mode
  */
 function graphiql_enqueue_fullscreen_toggle() {
-	
+
 	$fullscreen_toggle_asset_file = include( plugin_dir_path( __FILE__ ) . 'build/graphiqlFullscreenToggle.asset.php');
 
 	wp_enqueue_script(
@@ -161,5 +161,5 @@ function graphiql_enqueue_fullscreen_toggle() {
 		[ 'wp-components' ],
 		$fullscreen_toggle_asset_file['version']
 	);
-	
+
 }
