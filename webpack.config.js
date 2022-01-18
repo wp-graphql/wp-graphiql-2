@@ -17,6 +17,11 @@ module.exports = {
       "src/extensions/graphiql-auth-switch",
       "index.js"
     ),
+    graphiqlFullscreenToggle: path.resolve(
+      process.cwd(),
+      "src/extensions/graphiql-fullscreen-toggle",
+      "index.js"
+    ),
     // documentTabs: path.resolve(process.cwd(), "src/document-tabs", "index.js"),
   },
   externals: {
