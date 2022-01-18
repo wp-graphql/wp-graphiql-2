@@ -19,8 +19,8 @@ This plugin is intended to be used with WPGraphQL (https://wordpress.org/plugins
 
 **New Feature**
 
+- ([#13](https://github.com/wp-graphql/wp-graphiql-2/pull/13)): Adds a full-screen toggle to the GraphiQL Toolbar. Super cool example of building a feature using the "extension" APIs. Thanks @scottyzen!
 - ([#14](https://github.com/wp-graphql/wp-graphiql-2/pull/14)): Wraps the app with ApolloProvider. Extensions can make use of Apollo Client functions such as useQuery, etc.
-
 
 = 0.1.1 =
 
