@@ -15,9 +15,9 @@ core as the default GraphiQL IDE that will be supported and maintained with WPGr
 
 ## Installation / Activation
 
-At this moment, this plugin is only available from Github, so you'll need to download the Zip or clone the repo. 
+At this moment, this plugin is only available from Github, so you'll need to download the Zip or clone the repo.
 
-The repo does include the built JavaScript files, so you can install the zip of the plugin to your WordPress install. 
+The repo does include the built JavaScript files, so you can install the zip of the plugin to your WordPress install.
 
 In the future, the plugin will also be available on Packagist for installing via Composer and available on WordPress.org
 

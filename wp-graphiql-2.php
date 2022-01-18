@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WPGraphiQL 2.0
- * Version: 0.1.3
+ * Version: 0.1.4
  * Description: This is the temporary home of the WPGraphiQL 2.0 plugin which will eventually be merged into WPGraphQL core. New features will be iterated on in this repo and progressively added to WPGraphQL core.
  * Plugin URI: https://github.com/wp-graphql/wp-graphiql-2
  * Author: WPGraphQL

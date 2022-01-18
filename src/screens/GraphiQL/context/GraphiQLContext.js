@@ -72,19 +72,20 @@ export const GraphiQLContextProvider = ({ children }) => {
     return defaultQuery;
   };
 
-  const defaultVariables = ( window && window?.localStorage?.getItem( 'graphiql:variables' ) ) ?? null;
+  const defaultVariables =
+    (window && window?.localStorage?.getItem("graphiql:variables")) ?? null;
   const [query, setQuery] = useState(getDefaultQuery());
-  const [variables, setVariables] = useState( defaultVariables );
+  const [variables, setVariables] = useState(defaultVariables);
   const [externalFragments, setExternalFragments] = useState(
     getExternalFragments()
   );
 
   const _updateVariables = (variables) => {
     if (window && window.localStorage) {
-      window.localStorage.setItem( 'graphiql:variables', variables );
+      window.localStorage.setItem("graphiql:variables", variables);
     }
-    setVariables( variables )
-  }
+    setVariables(variables);
+  };
 
   const _updateQuery = (newQuery) => {
     hooks.doAction("graphiql_update_query", { query, newQuery });

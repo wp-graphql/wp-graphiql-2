@@ -57,7 +57,7 @@ const ExplorerWrapper = (props) => {
             borderTop: `1px solid #d6d6d6`,
             bottom: 0,
             left: 0,
-            overflowY: "scroll",
+            overflowY: "hidden",
             padding: `0`,
             right: 0,
             top: `47px`,
