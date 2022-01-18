@@ -47,7 +47,7 @@ const GraphiQLScreen = () => {
 
   const appContext = useAppContext();
   const graphiqlContext = useGraphiQLContext();
-  const { query, setQuery, externalFragments } = graphiqlContext;
+  const { query, setQuery, externalFragments, variables, setVariables } = graphiqlContext;
   const { endpoint, nonce, schema, setSchema } = appContext;
 
   let fetcher = getFetcher(endpoint, { nonce });
@@ -109,6 +109,8 @@ const GraphiQLScreen = () => {
         schema={schema}
         query={query}
         onEditQuery={handleEditQuery}
+        onEditVariables={setVariables}
+        variables={variables}
         validationRules={specifiedRules}
         readOnly={false}
         externalFragments={externalFragments}
@@ -121,13 +123,6 @@ const GraphiQLScreen = () => {
             setSchema(newSchema);
           }
         }}
-        variables={JSON.stringify(
-          {
-            first: 10,
-          },
-          null,
-          2
-        )}
       >
         <GraphiQL.Toolbar>
           <GraphiQLToolbar graphiql={() => graphiql} />
