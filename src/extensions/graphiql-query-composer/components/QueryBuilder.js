@@ -320,7 +320,7 @@ const QueryBuilder = (props) => {
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
         margin: 0,
-        padding: 8,
+        padding: 0,
         fontFamily:
           'Consolas, Inconsolata, "Droid Sans Mono", Monaco, monospace',
         display: "flex",
@@ -332,9 +332,9 @@ const QueryBuilder = (props) => {
       <div
         style={{
           flexGrow: 1,
-          overflowY: "hidden",
+          overflowY: "scroll",
           width: `100%`,
-          padding: "10px",
+          padding: "8px",
         }}
       >
         {relevantOperations.map((operation, index) => {
