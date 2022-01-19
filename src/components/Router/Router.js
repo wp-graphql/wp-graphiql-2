@@ -27,7 +27,7 @@ const StyledRouter = styled.div`
   .graphiql-app-screen-sider .ant-layout-sider-trigger {
     position: relative;
   }
-  border: 1px solid #e8e8e8;
+  border: 0;
   width: 100%;
 `;
 
@@ -184,7 +184,7 @@ const Router = (props) => {
 
   return currentScreen ? (
     <StyledRouter data-testid="graphiql-router">
-      <Layout style={{ height: `calc(100vh - 65px)`, width: `100%` }}>
+      <Layout style={{ height: `calc(100vh - 32px)`, width: `100%` }}>
         <RouterSider
           setQueryParams={setQueryParams}
           setCurrentScreen={setCurrentScreen}

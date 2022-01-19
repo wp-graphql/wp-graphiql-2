@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledWrapper = styled.div`
   padding: 24px;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 /**

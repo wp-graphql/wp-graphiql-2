@@ -1,5 +1,6 @@
 import { capitalize } from "../utils/utils";
 import FieldView from "./FieldView";
+import styled from 'styled-components'
 import {
   Button,
   Collapse,
@@ -18,6 +19,22 @@ import {
 const { hooks } = wpGraphiQL;
 
 const { useEffect } = wp.element;
+
+const StyledRootView = styled.div`
+
+.ant-collapse {
+    margin-bottom: 10px;
+}
+.ant-collapse-content {
+    padding-left: 15px;
+    padding-top: 0px;
+    max-height: 450px;
+    overflow-y: scroll;
+}
+.ant-collapse-content-box {
+  padding: 0;
+}
+`;
 
 const RootView = (props) => {
   let _previousOperationDef;
@@ -208,15 +225,12 @@ const RootView = (props) => {
   );
 
   return (
-    <div id={`collapse-wrap-${index}`}>
+    <StyledRootView id={`collapse-wrap-${index}`}>
       <span id={`collapse-wrap-${rootViewElId}`} />
       <Collapse
         key={`collapse-${index}`}
         id={`collapse-${index}`}
         tabIndex="0"
-        style={{
-          marginBottom: "1em",
-        }}
         defaultActiveKey={0}
       >
         <Collapse.Panel
@@ -270,8 +284,7 @@ const RootView = (props) => {
         >
           <div
             style={{
-              maxHeight: `500px`,
-              overflowY: "scroll",
+              padding: '10px 0 0 0',
             }}
           >
             {Object.keys(fields)
@@ -296,7 +309,7 @@ const RootView = (props) => {
           </div>
         </Collapse.Panel>
       </Collapse>
-    </div>
+    </StyledRootView>
   );
 };
 
