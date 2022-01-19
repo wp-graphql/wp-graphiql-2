@@ -21,6 +21,7 @@ const StyledWrapper = styled.div`
   .doc-explorer-title,
   .history-title {
     padding-top: 5px;
+    overflow: hidden;
   }
   .doc-explorer-back {
     overflow: hidden;
