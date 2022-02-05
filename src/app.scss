@@ -13,6 +13,16 @@
 	margin: 0;
 }
 
+#wpbody-content{
+	position: sticky;
+	top: 32px;
+	margin-bottom: -32px;
+}
+
+#wpbody-content > *:not(.wrap) {
+	display: none;
+}
+
 #wpfooter {
 	display: none;
 }
